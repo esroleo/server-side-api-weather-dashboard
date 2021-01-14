@@ -1,6 +1,6 @@
 // Global variable that will take then input of city and converte it to lowercase and pass it as the query to OpenWeather API.
+let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=scarborough&appid=32a27c42260b02de3ba5e1466def4861";
 
-let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=scarborough&appid=32a27c42260b02de3ba5e1466def4861"
 
 var getDate = function(unixTime) {
 
@@ -20,7 +20,7 @@ var getDate = function(unixTime) {
     // Minutes part from the timestamp
    // var minutes = "0" + date.getMinutes();
     // Seconds part from the timestamp
-//var seconds = "0" + date.getSeconds();
+    //var seconds = "0" + date.getSeconds();
     
     // Will display time in 10:30:23 format
  //   var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
@@ -60,12 +60,75 @@ var getUVNumber =  function (lonNum, latNum) {
     let openWeatherApiUVUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861"
     fetch(openWeatherApiUVUrl).then(function(response) {
         response.json().then(function(jsonData) {
-            console.log(jsonData);
-            console.log(jsonData.current.uvi)
+          //  console.log(jsonData);
+           // console.log(jsonData.current.uvi)
         }) 
     })
 
 };
+
+var getFiveDayForcast =  function (lonNum, latNum) {
+
+    // This section is only taking the uvi of the new openweather API.
+    // We could use all of it on the new API, but we still need the longitute and latitude, hence will leave as is.
+
+    let openWeatherApiFiveDayUrl ="https://api.openweathermap.org/data/2.5/forecast?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861";
+    fetch(openWeatherApiFiveDayUrl).then(function(response) {
+        response.json().then(function(jsonData) {
+            console.log(openWeatherApiFiveDayUrl);
+           //console.log(jsonData);
+           // for each output check the dt_text and get the daily for one day only.
+          
+           console.log(underlyingDay);
+
+           // Check each one
+        
+            console.log(jsonData.list[0])
+            console.log(jsonData.list[1].dt)
+            //console.log(jsonData.list[1])
+            // unix time today
+            let unixTime = jsonData.list[0].dt;
+            let unix_timestamp = unixTime;
+            // Create a new JavaScript Date object based on the timestamp
+            // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+            var date = new Date(unix_timestamp * 1000);
+            var year = date.getFullYear();
+            var monthOfYear = date.getMonth() + 1;
+            var dayOfMonth = date.getDay();
+
+            // Compare today with dt-text to ignore and continue
+
+            var underlyingDay = jsonData.list[1].dt_txt;
+            var underlyingDay = underlyingDay.substring(8,10);
+            var compareToday = date.getDate();
+            // If underlyingDay is =  compare Today it means that we need to ignore that days forecast.
+            console.log("Today is " + underlyingDay + "    Forcast day is " + compareToday);
+            console.log((typeof underlyingDay) + (typeof compareToday));
+
+            if (parseInt(underlyingDay) === compareToday) {
+                console.log("Today is " + underlyingDay + "    Forcast day is " + compareToday);
+                console.log(typeof((parseInt(underlyingDay))) + (typeof compareToday));
+            } else {
+
+                alert("Get the rest of the data for the 5 day forcast");
+
+            }
+            
+            
+
+
+            // To be displayed
+            var fullDay = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")";
+            console.log("First day of the 5 day forecast: " + fullDay );
+            console.log(jsonData.list[4].dt_txt);
+        }) 
+    })
+
+};
+
+
+
+
 
 var getWeatherData = function() {
 
@@ -89,6 +152,7 @@ var getWeatherData = function() {
             // Function call to get the uv information.
             // Passed the lonNum and latNum parameters as arguments to bne used. 
             getUVNumber(lonNum, latNum);
+            getFiveDayForcast(lonNum, latNum)
         
       
             //console.log("lon " + lonNum + "\nlat " + latNum)
