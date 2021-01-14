@@ -101,9 +101,22 @@ var getFiveDayForcast =  function (lonNum, latNum) {
             var year = date.getFullYear();
             var monthOfYear = date.getMonth() + 1;
             var dayOfMonth = date.getDate();
-            var fullDay = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")";
- 
+
+            // Values to be displayed
+            var fullDay = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")"; // Date
+            var iconWeather = jsonData.daily[i].weather[0].icon // icon
+            let kelvinTemp = jsonData.daily[i].temp.day // temp Kelvin
+            let fahrenheitTemp = ( (kelvinTemp - 273.15) * (9/5) + 32 ); // Converted to fahrenheit temperature
+            let humidity = jsonData.daily[i].humidity + "%"
+
+            
+             
             console.log(fullDay)
+            console.log(iconWeather)
+            console.log("Temp: " + fahrenheitTemp.toFixed(1) + " °F"); // Fahrenheit temperature
+            console.log("Humidity: " + humidity);
+
+
 
 
        
@@ -129,8 +142,9 @@ var getWeatherData = function() {
             console.log(jsonData.weather[0].icon); // Icon 
             let kelvinTemp = jsonData.main.temp
             let fahrenheitTemp = ( (kelvinTemp - 273.15) * (9/5) + 32 ); // Converted to fahrenheit temperature
-            console.log("Temperature: " + fahrenheitTemp.toFixed(1) + "°F"); // Fahrenheit temperature
-            //console.log(jsonData.main.humidity + "%");
+            console.log("Temperature: " + fahrenheitTemp.toFixed(1) + " °F"); // Fahrenheit temperature
+            let humidity = jsonData.main.humidity + "%"
+            console.log(humidity);
             let metersPerSecSpeed = jsonData.wind.speed
             let mphWindSpeed = Math.round(metersPerSecSpeed * 2.237) + " MPH"; // Convert meters per second to miles per hour
             console.log(mphWindSpeed);
