@@ -72,56 +72,45 @@ var getFiveDayForcast =  function (lonNum, latNum) {
     // This section is only taking the uvi of the new openweather API.
     // We could use all of it on the new API, but we still need the longitute and latitude, hence will leave as is.
 
-    let openWeatherApiFiveDayUrl ="https://api.openweathermap.org/data/2.5/forecast?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861";
+    //let openWeatherApiFiveDayUrl ="https://api.openweathermap.org/data/2.5/forecast?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861";
+    let openWeatherApiFiveDayUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&exclude=current,minutely,hourly,alerts&appid=32a27c42260b02de3ba5e1466def4861"
+
     fetch(openWeatherApiFiveDayUrl).then(function(response) {
         response.json().then(function(jsonData) {
+
+            console.log("5 day forcast information\n")
             console.log(openWeatherApiFiveDayUrl);
            //console.log(jsonData);
            // for each output check the dt_text and get the daily for one day only.
           
-           console.log(underlyingDay);
-
            // Check each one
-        
-            console.log(jsonData.list[0])
-            console.log(jsonData.list[1].dt)
-            //console.log(jsonData.list[1])
-            // unix time today
-            let unixTime = jsonData.list[0].dt;
+
+
+
+
+           for (i=1; i< jsonData.daily.length; i++) {
+
+            let unixTime = jsonData.daily[i].dt;
+            console.log("Correct 5 day forcast" + unixTime)
+
             let unix_timestamp = unixTime;
             // Create a new JavaScript Date object based on the timestamp
             // multiplied by 1000 so that the argument is in milliseconds, not seconds.
             var date = new Date(unix_timestamp * 1000);
+            // Hours part from the timestamp
             var year = date.getFullYear();
             var monthOfYear = date.getMonth() + 1;
-            var dayOfMonth = date.getDay();
-
-            // Compare today with dt-text to ignore and continue
-
-            var underlyingDay = jsonData.list[1].dt_txt;
-            var underlyingDay = underlyingDay.substring(8,10);
-            var compareToday = date.getDate();
-            // If underlyingDay is =  compare Today it means that we need to ignore that days forecast.
-            console.log("Today is " + underlyingDay + "    Forcast day is " + compareToday);
-            console.log((typeof underlyingDay) + (typeof compareToday));
-
-            if (parseInt(underlyingDay) === compareToday) {
-                console.log("Today is " + underlyingDay + "    Forcast day is " + compareToday);
-                console.log(typeof((parseInt(underlyingDay))) + (typeof compareToday));
-            } else {
-
-                alert("Get the rest of the data for the 5 day forcast");
-
-            }
-            
-            
-
-
-            // To be displayed
+            var dayOfMonth = date.getDate();
             var fullDay = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")";
-            console.log("First day of the 5 day forecast: " + fullDay );
-            console.log(jsonData.list[4].dt_txt);
-        }) 
+ 
+            console.log(fullDay)
+
+
+       
+
+        }
+
+        }) ;
     })
 
 };
