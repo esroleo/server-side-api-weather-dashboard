@@ -1,0 +1,48 @@
+
+
+.citySearchContainer {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    
+}
+
+#cityName {
+    height:35px;
+
+}
+
+input:focus, textarea:focus, select:focus {
+outline-offset: 0px !important;
+outline: none !important;
+}
+
+
+#cityName input:focus {
+    box-shadow: 0 0 10px dodgerblue !important;
+    -moz-box-shadow: 0 0 3px green !important;
+    -webkit-box-shadow: 0 0 3px green !important;
+}
+    
+
+.btn {
+    
+    font-size: 1.5em;
+    text-decoration:none;
+    border: none;
+    outline: none;
+    background-color: dodgerblue;
+    color: white;
+ /*
+    box-shadow: 3px 3px var(--dark);
+    transform: translate(-1px, -1px);
+    */
+    margin-bottom: 6px;
+  }
+
+  .fa-search:hover{
+    color: #FFD700;
+  }
+    
+
+

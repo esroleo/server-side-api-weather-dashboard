@@ -1,5 +1,8 @@
-// Global variable that will take then input of city and converte it to lowercase and pass it as the query to OpenWeather API.
-let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=scarborough&appid=32a27c42260b02de3ba5e1466def4861";
+// Get form element value
+let seachEventHanglerEl = document.querySelector("#cityForm");
+let searchByCityEl = document.querySelector("#cityName");
+
+
 
 
 var getDate = function(unixTime) {
@@ -132,11 +135,23 @@ var getFiveDayForcast =  function (lonNum, latNum) {
 
 
 
-var getWeatherData = function() {
+var getWeatherData = function(event) {
+
+    event.preventDefault();
+    // get value from input elementgit 
+    var searchByCity = searchByCityEl.value.trim();
+    console.log("The selected by user is: " + searchByCity);
+
+
+    // Global variable that will take then input of city and converte it to lowercase and pass it as the query to OpenWeather API.
+    // Hardcoded let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + "scarborough" + "&appid=32a27c42260b02de3ba5e1466def4861";
+    let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchByCity + "&appid=32a27c42260b02de3ba5e1466def4861";
+
+
 
     fetch(openWeatherApiUrl).then(function(response) {
         response.json().then(function(jsonData) {
-            console.log(jsonData.name); // City Name
+            console.log("json city returned is: " + jsonData.name); // City Name
             // console.log("Date") use moment.js for now
             getDate(jsonData.dt);
             console.log(jsonData.weather[0].icon); // Icon 
@@ -184,6 +199,9 @@ var getWeatherData = function() {
 };
 
 
+seachEventHanglerEl.addEventListener("submit",getWeatherData);
 
 
-getWeatherData();
+//userFormEl.addEventListener("submit", formSubmitHandler);
+
+//getWeatherData();
