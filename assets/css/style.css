@@ -19,7 +19,8 @@ header {
 .citySearchContainer {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: column;
+   /* flex-direction: column;*/
+   justify-content: space-between;
     
 }
 
@@ -58,6 +59,16 @@ outline: none !important;
 
   .fa-search:hover{
     color: #FFD700;
+  }
+
+
+  .borderDiv {
+
+    
+      
+    border:groove rgba(102, 102, 153, 0.2);
+  
+
   }
     
 
