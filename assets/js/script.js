@@ -1,8 +1,45 @@
 // Get form element value
 let seachEventHanglerEl = document.querySelector("#cityForm");
 let searchByCityEl = document.querySelector("#cityName");
+let citiesListContainerEl = document.querySelector("#cities-list");
 
 
+var populateHTML = function() {
+
+       // Get array from local storage
+       let citiesLocalStorage = JSON.parse(localStorage.getItem("savedCities"));
+
+       // City exist or not. 0 = not, 1 = yes
+       let cityExist = 0;
+   
+         
+       if (citiesLocalStorage === null) {
+           // It does note exist, therefore, no items to add to saved cities
+           console.log("No items to add");
+           
+       } else { // we will popualte the saved cities
+
+
+       $(".list-group-item").remove(); // Remove all list items from the document with jquery
+           
+        for (i=0; i< citiesLocalStorage.length;i++) {
+
+            
+
+            let cityNameEl = document.createElement("a")
+            cityNameEl.setAttribute("href", "#")
+            cityNameEl.setAttribute("id", citiesLocalStorage[i]);
+            cityNameEl.classList = "list-group-item list-group-item-action list-group-item-primary";
+            cityNameEl.textContent = citiesLocalStorage[i];
+            citiesListContainerEl.appendChild(cityNameEl);
+        
+            }
+        
+           alert("All saved cities have been populated");
+       };
+   
+
+};
 
 
 
@@ -158,6 +195,8 @@ var getFiveDayForcast =  function (lonNum, latNum) {
 var getWeatherData = function(event) {
 
     event.preventDefault();
+
+
     // get value from input elementgit 
     var searchByCity = searchByCityEl.value.trim().toLowerCase();
     console.log("The selected by user is: " + searchByCity);
@@ -174,6 +213,20 @@ var getWeatherData = function(event) {
     // Hardcoded let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + "scarborough" + "&appid=32a27c42260b02de3ba5e1466def4861";
     let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchByCity + "&appid=32a27c42260b02de3ba5e1466def4861&units=imperial";
     console.log(openWeatherApiUrl);
+    
+
+    /*
+
+    .attr('type', 'text') // Text input type
+    .attr('id', `input-${hourIndex}`) // Create a index of the input for track purposes
+    .attr('hour-index', hourIndex); // To be used to change clors of the input task.
+    
+    
+
+    var repoEl = document.createElement("a");
+    repoEl.classList = "list-item flex-row justify-space-between align-center";
+    repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
+    */
 
 
     // Clear the element of input and save it to a variable that will display it on the saved cities
@@ -184,19 +237,18 @@ var getWeatherData = function(event) {
   // console.log("array lenght is " + citiesSearched.length)
 
 
-
-
     // Get array from local storage
     let citiesLocalStorage = JSON.parse(localStorage.getItem("savedCities"));
 
     // City exist or not. 0 = not, 1 = yes
     let cityExist = 0;
 
+
     // Check if array is null and create new one again.
     if (citiesLocalStorage === null) {
         citiesSearched =  new Array();
         console.log("new array craeted");
-
+        
     } else { // Assign the localStorage values to new (array), not a reference
         citiesSearched = citiesLocalStorage;
         console.log("Values from local Storage are: " + citiesSearched);
@@ -267,9 +319,20 @@ var getWeatherData = function(event) {
                 // if it is the second city and is not new then add to local storage
                 if (cityExist === 0) {
                     alert("city has been pushed" + ( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ));
+                   // citiesLocalStorage=[];
+                    //citiesSearched = []; 
+                      // localStorage.setItem("savedCities", JSON.stringify(citiesLocalStorage));
                     citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
                     localStorage.setItem("savedCities", JSON.stringify(citiesSearched));
                 }
+
+                // After all items have been pushed to array populate the cities in html
+
+               // citiesSearched = []; 
+
+                populateHTML(); // Second after a push has been done.
+
+                
 
             
         
@@ -314,3 +377,19 @@ seachEventHanglerEl.addEventListener("submit",getWeatherData);
 //userFormEl.addEventListener("submit", formSubmitHandler);
 
 //getWeatherData();
+
+// Make any 
+
+$(document).on('click','a', function(event) {
+
+    alert("element list clicked")
+
+
+
+});
+
+
+// Load saved cities to the saved cities section.
+populateHTML(); // First call to load the saved cities html.
+
+
