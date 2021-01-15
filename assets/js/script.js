@@ -2,9 +2,11 @@
 let seachEventHanglerEl = document.querySelector("#cityForm");
 let searchByCityEl = document.querySelector("#cityName");
 let citiesListContainerEl = document.querySelector("#cities-list");
+let dailyForecastContainerEl = document.querySelector("#daily-forecast-container")
+let globalTestVariable = "gloabl variable";
 
 
-var populateHTML = function() {
+var populateSavedCities = function() {
 
        // Get array from local storage
        let citiesLocalStorage = JSON.parse(localStorage.getItem("savedCities"));
@@ -41,6 +43,18 @@ var populateHTML = function() {
 
 };
 
+var populateDailyForecast = function(fullDayDaily, iconWeather, tempImperial, humidity, mphWindSpeed, uvIndex) {
+
+    let dailyDetails = document.createElement("h3");
+    alert("populateDailyForecast full day is" + fullDayDaily)
+    dailyDetails.textContent = fullDayDaily;
+
+
+   
+    dailyForecastContainerEl.appendChild(dailyDetails);
+
+}
+
 
 
 var getDate = function(unixTime) {
@@ -56,7 +70,7 @@ var getDate = function(unixTime) {
     var year = date.getFullYear();
     var monthOfYear = date.getMonth() + 1;
     var dayOfMonth = date.getDate();
-    var fullDay = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")";
+    var fullDayDaily = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")";
     //var hours = date.getHours();
     // Minutes part from the timestamp
    // var minutes = "0" + date.getMinutes();
@@ -70,7 +84,7 @@ var getDate = function(unixTime) {
     console.log("unix day format is " + dayOfMonth);
     console.log("unix month format is " + monthOfYear);
     console.log("unix year format is " + year);
-    console.log("Full day of unix format is: " + fullDay);
+    console.log("Full day of unix format is: " + fullDayDaily);
  
 
   //  const birthday = new Date('August 19, 1975 23:15:30');
@@ -83,6 +97,8 @@ var getDate = function(unixTime) {
     
         //const birthday = new Date('August 19, 1975 23:15:30');
         //const date1 = birthday.getDate();
+        globalTestVariable = fullDayDaily + "this is the full variable date";
+    return fullDayDaily
         
 
 
@@ -92,25 +108,31 @@ var getDate = function(unixTime) {
 // expected output: 19
 
 
-var getUVNumber =  function (lonNum, latNum) {
+var getUVNumber =  function (latNum, lonNum) {
 
     // This section is only taking the uvi of the new openweather API.
     // We could use all of it on the new API, but we still need the longitute and latitude, hence will leave as is.
     //"lon": -123.1193,
     //"lat": 49.2497
+    //lat = 43.7001
+    //lon = -79.4163
+    //https://api.openweathermap.org/data/2.5/onecall?lat=43.7001&lon=-79.4163&appid=32a27c42260b02de3ba5e1466def4861
+    
 
-    let openWeatherApiUVUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861"
+    let openWeatherApiUVUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + latNum + "&lon=" + lonNum + "&appid=32a27c42260b02de3ba5e1466def4861"
     //let openWeatherApiUVUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=-123.11&lon=49.24&appid=32a27c42260b02de3ba5e1466def4861"
     fetch(openWeatherApiUVUrl).then(function(response) {
         response.json().then(function(jsonData) {
           //  console.log(jsonData);
+          let uvIndex = jsonData.current.uvi
            console.log(jsonData.current.uvi)
-        }) 
-    })
+           return uvIndex
+        });
+    });
 
 };
 
-var getFiveDayForcast =  function (lonNum, latNum) {
+var getFiveDayForcast =  function (latNum, lonNum) {
 
     // This section is only taking the uvi of the new openweather API.
     // We could use all of it on the new API, but we still need the longitute and latitude, hence will leave as is.
@@ -193,6 +215,9 @@ var getFiveDayForcast =  function (lonNum, latNum) {
 
 
 var getWeatherData = function(event) {
+
+
+
 
     event.preventDefault();
 
@@ -279,15 +304,19 @@ var getWeatherData = function(event) {
 
         if(response.ok) { // Check if ther response is ok, meaning a HTTP 200 response.
 
+            
+            
                 response.json().then(function(jsonData) {
                 console.log("json city returned is: " + jsonData.name); // City Name
                 // console.log("Date") use moment.js for now
                 getDate(jsonData.dt);
+               // alert("full day is" + fullDayDaily);
+                jsonData.weather[0].icon;
                 console.log(jsonData.weather[0].icon); // Icon 
-                let kelvinTemp = jsonData.main.temp
+                let tempImperial = jsonData.main.temp
                // let fahrenheitTemp = ( (kelvinTemp - 273.15) * (9/5) + 32 ); // Converted to fahrenheit temperature
               //  console.log("Temperature: " + fahrenheitTemp.toFixed(1) + " °F"); // Fahrenheit temperature
-               console.log("Temperature:" + kelvinTemp + " °F");
+               console.log("Temperature:" + tempImperial + " °F");
                 let humidity = jsonData.main.humidity + "%"
                 console.log(humidity);
                 let metersPerSecSpeed = jsonData.wind.speed
@@ -298,12 +327,14 @@ var getWeatherData = function(event) {
                 let latNum = jsonData.coord.lat;
                 let lonNum = jsonData.coord.lon;
                 
-                console.log(lonNum);
-                console.log(latNum);
+                console.log("latitude" + latNum);
+                console.log("longitud" + lonNum);
            
                 // Function call to get the uv information.
                 // Passed the lonNum and latNum parameters as arguments to bne used. 
-                getUVNumber(latNum, lonNum);
+                let uvIndex = getUVNumber(latNum, lonNum);
+               
+
                 getFiveDayForcast(latNum, lonNum);
 
                 // Add the sucessful api call city to the local storage.
@@ -330,7 +361,7 @@ var getWeatherData = function(event) {
 
                // citiesSearched = []; 
 
-                populateHTML(); // Second after a push has been done.
+                populateSavedCities(); // Second after a push has been done.
 
                 
 
@@ -355,6 +386,11 @@ var getWeatherData = function(event) {
                 //http://openweathermap.org/img/wn/04d@2x.png
         
             });
+
+            alert(globalTestVariable);
+
+          
+        
         } else { // Any other response like 400 500 will display the error.
             window.alert("Error: " + response.statusText + "\nPlease re-enter a valid city");
             // Clear the input parameter from the user
@@ -368,7 +404,11 @@ var getWeatherData = function(event) {
       });
 
 
+
+
 };
+
+
 
 
 seachEventHanglerEl.addEventListener("submit",getWeatherData);
@@ -390,6 +430,8 @@ $(document).on('click','a', function(event) {
 
 
 // Load saved cities to the saved cities section.
-populateHTML(); // First call to load the saved cities html.
+populateSavedCities(); // First call to load the saved cities html.
+
+
 
 
