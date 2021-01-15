@@ -202,8 +202,8 @@ var getWeatherData = function(event) {
         console.log("Values from local Storage are: " + citiesSearched);
     };
 
-    
-
+    /*
+    // Move this block to the first reponse of the API as sucessful to add to local storage only then.
     for (i=0; i < citiesSearched.length; i++) {
         if (searchByCity === citiesSearched[i].toLowerCase()) {
             console.log("city " + citiesSearched[i] + "already exist in array")
@@ -212,13 +212,14 @@ var getWeatherData = function(event) {
         } 
     }
 
-    alert(citiesSearched + cityExist)
+    //alert(citiesSearched + cityExist)
 
     if (cityExist === 0) {
         alert("city has been pushed" + ( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ));
         citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
         localStorage.setItem("savedCities", JSON.stringify(citiesSearched));
     }
+    */
 
 
 
@@ -252,6 +253,24 @@ var getWeatherData = function(event) {
                 // Passed the lonNum and latNum parameters as arguments to bne used. 
                 getUVNumber(latNum, lonNum);
                 getFiveDayForcast(latNum, lonNum);
+
+                // Add the sucessful api call city to the local storage.
+                for (i=0; i < citiesSearched.length; i++) {
+                    if (searchByCity === citiesSearched[i].toLowerCase()) {
+                        console.log("city " + citiesSearched[i] + "already exist in array")
+                        cityExist =1
+                        break;
+                    } 
+                }
+
+                // if the city is new it will add it because the lenght of the array was 0, then add to local storage
+                // if it is the second city and is not new then add to local storage
+                if (cityExist === 0) {
+                    alert("city has been pushed" + ( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ));
+                    citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
+                    localStorage.setItem("savedCities", JSON.stringify(citiesSearched));
+                }
+
             
         
                 //console.log("lon " + lonNum + "\nlat " + latNum)
@@ -274,11 +293,15 @@ var getWeatherData = function(event) {
         
             });
         } else { // Any other response like 400 500 will display the error.
-            window.alert("Error: " + response.statusText);
+            window.alert("Error: " + response.statusText + "\nPlease re-enter a valid city");
+            // Clear the input parameter from the user
+            searchByCityEl.value = "";
+            return;
         }
     }).catch(function(error) { // fetch api way of handling network errors.
         // Notice this `.catch()` getting chained onto the end of the `.then()` method
         alert("Unable to connect to OpenWeather");
+        return;
       });
 
 
