@@ -1,6 +1,7 @@
 // Get form element value
 let seachEventHanglerEl = document.querySelector("#cityForm");
 let searchByCityEl = document.querySelector("#cityName");
+let citiesSearched = [];
 
 
 
@@ -139,13 +140,41 @@ var getWeatherData = function(event) {
 
     event.preventDefault();
     // get value from input elementgit 
-    var searchByCity = searchByCityEl.value.trim();
+    var searchByCity = searchByCityEl.value.trim().toLowerCase();
     console.log("The selected by user is: " + searchByCity);
 
 
     // Global variable that will take then input of city and converte it to lowercase and pass it as the query to OpenWeather API.
     // Hardcoded let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + "scarborough" + "&appid=32a27c42260b02de3ba5e1466def4861";
     let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchByCity + "&appid=32a27c42260b02de3ba5e1466def4861";
+
+
+
+    // Clear the element of input and save it to a variable that will display it on the saved cities
+    // Saved cities have will go to local storage
+    // Save it back as the it should be in as first letter capitalized.
+    //citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
+   // citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
+   console.log("array lenght is " + citiesSearched.length)
+
+    if (citiesSearched.length === 0 ) {
+        citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
+        //console.log("This is the first insert on array " + citiesSearched);
+    }
+   
+
+    for (i=0; i < citiesSearched.length; i++) {
+        if (searchByCity === citiesSearched[i].toLowerCase()) {
+            console.log("city " + citiesSearched[i] + "already exist in array")
+        } else
+        citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
+       // console.log(citiesSearched);
+
+    }
+
+    console.log(citiesSearched);
+
+    
 
 
 
