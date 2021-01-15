@@ -242,15 +242,16 @@ var getWeatherData = function(event) {
                 console.log(mphWindSpeed);
         
                 // Get lon and lat for the uv
-                let lonNum = jsonData.coord.lon;
                 let latNum = jsonData.coord.lat;
+                let lonNum = jsonData.coord.lon;
+                
                 console.log(lonNum);
                 console.log(latNum);
            
                 // Function call to get the uv information.
                 // Passed the lonNum and latNum parameters as arguments to bne used. 
-                getUVNumber(lonNum, latNum);
-                getFiveDayForcast(lonNum, latNum);
+                getUVNumber(latNum, lonNum);
+                getFiveDayForcast(latNum, lonNum);
             
         
                 //console.log("lon " + lonNum + "\nlat " + latNum)
