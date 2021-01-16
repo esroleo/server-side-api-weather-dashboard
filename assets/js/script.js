@@ -2,7 +2,10 @@
 let seachEventHanglerEl = document.querySelector("#cityForm");
 let searchByCityEl = document.querySelector("#cityName");
 let citiesListContainerEl = document.querySelector("#cities-list");
-let dailyForecastContainerEl = document.querySelector("#daily-forecast-container")
+let dailyWeatherContainerEl = document.querySelector("#daily-container");
+//let dailyForecastContainerEl = document.querySelector("#daily-forecast-container")
+
+
 let globalTestVariable = "gloabl variable";
 let globalCallsState = 0;
 
@@ -231,7 +234,7 @@ function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, curre
       
       // Current Day UV
       let uvIndex = secondCallData.current.uvi
-      console.log(uvIndex)
+     //console.log(uvIndex)
 
       // *** Curent date forrmat ** //
 
@@ -256,15 +259,36 @@ function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, curre
    
          
       // Populate current day data
-      populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed);
+      populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed, uvIndex);
 
       // Populate 5 day forcast
      // populate5DayForecast(other)
     });
   }
 
-function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed) {
+function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed, uvIndex) {
+    
+    
     // Populate current Day html
+
+
+    // Creat div container for daily forecast
+    
+  //  <div id="daily-forecast-container" class="borderDiv">
+
+   // </div>
+
+    let dailyForecastContainerEl = document.createElement("div");
+    dailyForecastContainerEl.setAttribute("id", "daily-forecast-container");
+    dailyForecastContainerEl.classList = "borderDiv";
+    //cityNameEl.classList = "list-group-item list-group-item-action list-group-item-primary";
+
+    // Locate the element
+
+    //let dailyForecastContainerEl = document.querySelector("#daily-forecast-container")
+
+
+
     // Create title element
     //let imgIcon = <img src="http://openweathermap.org/img/wn/10d@2x.png"></img>
     let currentDayTitle = document.createElement("h3");
@@ -275,13 +299,26 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
     let currentIconSymbol = "http://openweathermap.org/img/wn/" + currentDayIcon + "@2x.png";
    // alert(currentIconSymbol);
    currentIconEl.innerHTML = "<img src=" + currentIconSymbol + "></img>";
-
    currentDayTitle.append(currentIconEl)
+
+    // Create p elements to hold the rest of current day informatino
+    let currentTempEl = document.createElement("p");
+    let currentHumidityEl = document.createElement("p");
+    let currentWinSpEl = document.createElement("p");
+    let currentUvIEl = document.createElement("p");
+
+    currentTempEl.textContent = "Temperature: " + currentTempImperial + " °F";
+    currentHumidityEl.textContent = "Humidity: " + currentHumidity + "%";
+    currentWinSpEl.textContent = "Wind Speed: " + currentMPS + " MPH";
+    currentUvIEl.textContent = "UV Index: " + uvIndex;
+
+
+   
 
 
     
 
-    // Crate p elements to hold the rest of current day informatino
+    
   //  let currentTemp = 
 
    // let cityNameEl = document.createElement("a")
@@ -291,11 +328,16 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
    // cityNameEl.textContent = citiesLocalStorage[i];
   //  citiesListContainerEl.appendChild(cityNameEl);
 
+  $("#daily-forecast-container").remove(); // Remove all list items from the document with jquery
+
+    dailyWeatherContainerEl.appendChild(dailyForecastContainerEl);
+    dailyForecastContainerEl.appendChild(currentDayTitle);
+    dailyForecastContainerEl.appendChild(currentTempEl);
+    dailyForecastContainerEl.appendChild(currentHumidityEl);
+    dailyForecastContainerEl.appendChild(currentWinSpEl);
+    dailyForecastContainerEl.appendChild(currentUvIEl);
 
 
-
-
-    dailyForecastContainerEl.append(currentDayTitle);
 
 
   }

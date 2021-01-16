@@ -67,6 +67,7 @@ outline: none !important;
 
 
   .borderDiv {
+    background-color: white;
     padding-left: 10px;
     margin-bottom: 18px;  
     border:groove rgba(102, 102, 153, 0.2);
