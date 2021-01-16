@@ -7,13 +7,7 @@ let citiesListContainerBtnEl = document.querySelector(".list-group-item");
 //let citiesListContainerEl = document.querySelector("button");
 // Daily forcast Containter
 let dailyWeatherContainerEl = document.querySelector("#forecast-output-container"); 
-
-
-
-
-
 //let dailyForecastContainerEl = document.querySelector("#daily-forecast-container")
-
 
 let globalTestVariable = "gloabl variable";
 let globalCallsState = 0;
@@ -42,6 +36,7 @@ var populateSavedCities = function() {
             
 
             let cityNameEl = document.createElement("a")
+            let splitCityText = "";
             cityNameEl.setAttribute("href", "#")
             cityNameEl.setAttribute("data-city", citiesLocalStorage[i]);
             cityNameEl.setAttribute("id", citiesLocalStorage[i]);
@@ -53,7 +48,7 @@ var populateSavedCities = function() {
        
         }
         
-           alert("All saved cities have been populated");
+          // alert("All saved cities have been populated");
        };
    
 
@@ -96,13 +91,12 @@ function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, curre
       var dayOfMonth = date.getDate();
       var fullDayDaily = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")";
               
-      //console.log("unix day format is " + dayOfMonth);
+    //console.log("unix day format is " + dayOfMonth);
     //  console.log("unix month format is " + monthOfYear);
-     // console.log("unix year format is " + year);
+    // console.log("unix year format is " + year);
     //  console.log("Full day of unix format is: " + fullDayDaily);
-      alert("Full day of unix format is: " + fullDayDaily)
-   
-         
+    // alert("Full day of unix format is: " + fullDayDaily)
+            
       // Populate current day data
       populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed, uvIndex);
 
@@ -115,16 +109,6 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
     
     
     // Populate current Day html
-
-
-    // Creat div container for daily forecast
-    
-  //  <div id="daily-forecast-container" class="borderDiv">
-
-   // </div>
-   
-
-    
 
     let dailyForecastContainerEl = document.createElement("div");
     dailyForecastContainerEl.setAttribute("id", "daily-forecast-container");
@@ -150,17 +134,8 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
     currentHumidityEl.textContent = "Humidity: " + currentHumidity + "%";
     currentWinSpEl.textContent = "Wind Speed: " + currentMPS + " MPH";
     currentUvIEl.textContent = "UV Index: " + uvIndex;
-   
-  //  let currentTemp = 
 
-   // let cityNameEl = document.createElement("a")
-   // cityNameEl.setAttribute("href", "#")
-   //cityNameEl.setAttribute("id", citiesLocalStorage[i]);
-   //// cityNameEl.classList = "list-group-item list-group-item-action list-group-item-primary";
-   // cityNameEl.textContent = citiesLocalStorage[i];
-  //  citiesListContainerEl.appendChild(cityNameEl);
-
-  $("#daily-forecast-container").remove(); // Remove all list items from the document with jquery
+    $("#daily-forecast-container").remove(); // Remove all list items from the document with jquery
 
     // *** Append to forecast output container
     // Append daily forecast
@@ -178,10 +153,6 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
 
   
 function populate5DayForecast(secondCallData) {
-    // do something
-
-    console.log(secondCallData);
-    console.log("5 Day forecast values")
 
    $("#weekly-forecast-container").remove(); // Remove all list items from the document with jquery
 
@@ -205,109 +176,104 @@ function populate5DayForecast(secondCallData) {
 
 
 
-    //fiveDayForecast.appendChild(weeklyForecastContainerEl);
+    for (i=1; i <= 5; i++) {
 
-    //for (i=0; i< jsonData.daily.length; i++) {
-        for (i=1; i <= 5; i++) {
-
-            let unixTime = secondCallData.daily[i].dt;
-            console.log("Correct 5 day forcast" + unixTime)
-        
-            let unix_timestamp = unixTime;
-            // Create a new JavaScript Date object based on the timestamp
-            // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-            var date = new Date(unix_timestamp * 1000);
-            // Hours part from the timestamp
-            var year = date.getFullYear();
-            var monthOfYear = date.getMonth() + 1;
-            var dayOfMonth = date.getDate();
-        
-            // Values to be displayed
-            var fullDay = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")"; // Date
-            var iconWeather = secondCallData.daily[i].weather[0].icon // icon
-            //let kelvinTemp = jsonData.daily[i].temp.day // temp Kelvin
-            let fahrenheitTemp = secondCallData.daily[i].temp.day // temp Kelvin
-            //let fahrenheitTemp = ( (kelvinTemp - 273.15) * (9/5) + 32 ); // Converted to fahrenheit temperature
-            //let fahrenheitTemp = ( kelvinTemp * (9/5) - 459 ); // Converted to fahrenheit temperature
-            let humidity = secondCallData.daily[i].humidity + "%"
-            
-                
-            console.log(fullDay)
-            console.log(iconWeather)
-            //console.log("Temp: " + fahrenheitTemp.toFixed(1) + " °F"); // Fahrenheit temperature
-            console.log("Temp: " + fahrenheitTemp + " °F")
-            console.log("Humidity: " + humidity);
-        
-            // *** Create 5 Day elements and display them on screen.
-        
-            // Create a div to hold each day of the 5 day weekly forecast.
-        
-            let eachDayContainer = document.createElement("div");
-            eachDayContainer.setAttribute("id", ("day=" + [i]));
-            eachDayContainer.classList = "border-div-five-day-forecast";
-            
-        
-            // let dailyForecastContainerEl = document.createElement("div");
-            // dailyForecastContainerEl.setAttribute("id", "daily-forecast-container");
-            // dailyForecastContainerEl.classList = "borderDiv";
-        
-        
-        
-            let currentDayTitle = document.createElement("p");
-            currentDayTitle.textContent = (fullDay);
-        
-        
-        //     let currentIconEl = document.createElement("span")
-        //    // "<i class='fas fa-check-square status-icon icon-success'></i>"
-        //     let currentIconSymbol = "http://openweathermap.org/img/wn/" + iconWeather + "@2x.png";
-        //    // alert(currentIconSymbol);
-        //    currentIconEl.innerHTML = "<img src=" + currentIconSymbol + "></img>";
-        //    currentDayTitle.append(currentIconEl)
-
-  
-
-            // a small span to hold the icon
-
-            let iconSpan = document.createElement("p");
-            iconSpan.textContent = "";
-
-            let currentIconEl = document.createElement("span")
-            // "<i class='fas fa-check-square status-icon icon-success'></i>"
-            let currentIconSymbol = "http://openweathermap.org/img/wn/" + iconWeather + "@2x.png";
-            // alert(currentIconSymbol);
-            currentIconEl.innerHTML = "<img src=" + currentIconSymbol + "></img>";
-            iconSpan.append(currentIconEl)
-
-        
-            // Create p elements to hold the rest of current day informatino
-            let currentTempEl = document.createElement("p");
-            let currentHumidityEl = document.createElement("p");
-          
-            currentTempEl.textContent = "Temperature: " + fahrenheitTemp + " °F";
-            currentHumidityEl.textContent = "Humidity: " + humidity + "%";
-        
-            
-          
-        
-          // *** Append to forecast output container
-          // Append daily forecast
-        
-          
-          //dailyWeatherContainerEl.appendChild(dailyForecastContainerEl);
-          //weeklyForecastContainerEl.appendChild(fiveDayForecast);
-
-
-          
-          eachDayContainer.appendChild(currentDayTitle);
-          eachDayContainer.appendChild(currentIconEl);
-          eachDayContainer.appendChild(currentTempEl);
-          eachDayContainer.appendChild(currentHumidityEl);
-          // Once all items have been appended to the eachDayContainer we can append to the parent.
-          weeklyFlexContainerEL.appendChild(eachDayContainer);
-        
-        };
+        let unixTime = secondCallData.daily[i].dt;
+        console.log("Correct 5 day forcast" + unixTime)
     
-   
+        let unix_timestamp = unixTime;
+        // Create a new JavaScript Date object based on the timestamp
+        // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+        var date = new Date(unix_timestamp * 1000);
+        // Hours part from the timestamp
+        var year = date.getFullYear();
+        var monthOfYear = date.getMonth() + 1;
+        var dayOfMonth = date.getDate();
+    
+        // Values to be displayed
+        var fullDay = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")"; // Date
+        var iconWeather = secondCallData.daily[i].weather[0].icon // icon
+        //let kelvinTemp = jsonData.daily[i].temp.day // temp Kelvin
+        let fahrenheitTemp = secondCallData.daily[i].temp.day // temp Kelvin
+        //let fahrenheitTemp = ( (kelvinTemp - 273.15) * (9/5) + 32 ); // Converted to fahrenheit temperature
+        //let fahrenheitTemp = ( kelvinTemp * (9/5) - 459 ); // Converted to fahrenheit temperature
+        let humidity = secondCallData.daily[i].humidity + "%"
+        
+            
+        console.log(fullDay)
+        console.log(iconWeather)
+        //console.log("Temp: " + fahrenheitTemp.toFixed(1) + " °F"); // Fahrenheit temperature
+        console.log("Temp: " + fahrenheitTemp + " °F")
+        console.log("Humidity: " + humidity);
+    
+        // *** Create 5 Day elements and display them on screen.
+    
+        // Create a div to hold each day of the 5 day weekly forecast.
+    
+        let eachDayContainer = document.createElement("div");
+        eachDayContainer.setAttribute("id", ("day=" + [i]));
+        eachDayContainer.classList = "border-div-five-day-forecast";
+        
+    
+        // let dailyForecastContainerEl = document.createElement("div");
+        // dailyForecastContainerEl.setAttribute("id", "daily-forecast-container");
+        // dailyForecastContainerEl.classList = "borderDiv";
+    
+    
+    
+        let currentDayTitle = document.createElement("p");
+        currentDayTitle.textContent = (fullDay);
+    
+    
+    //     let currentIconEl = document.createElement("span")
+    //    // "<i class='fas fa-check-square status-icon icon-success'></i>"
+    //     let currentIconSymbol = "http://openweathermap.org/img/wn/" + iconWeather + "@2x.png";
+    //    // alert(currentIconSymbol);
+    //    currentIconEl.innerHTML = "<img src=" + currentIconSymbol + "></img>";
+    //    currentDayTitle.append(currentIconEl)
+
+
+
+        // a small span to hold the icon
+
+        let iconSpan = document.createElement("p");
+        iconSpan.textContent = "";
+
+        let currentIconEl = document.createElement("span")
+        // "<i class='fas fa-check-square status-icon icon-success'></i>"
+        let currentIconSymbol = "http://openweathermap.org/img/wn/" + iconWeather + "@2x.png";
+        // alert(currentIconSymbol);
+        currentIconEl.innerHTML = "<img src=" + currentIconSymbol + "></img>";
+        iconSpan.append(currentIconEl)
+
+    
+        // Create p elements to hold the rest of current day informatino
+        let currentTempEl = document.createElement("p");
+        let currentHumidityEl = document.createElement("p");
+        
+        currentTempEl.textContent = "Temperature: " + fahrenheitTemp + " °F";
+        currentHumidityEl.textContent = "Humidity: " + humidity + "%";
+    
+        
+        
+    
+        // *** Append to forecast output container
+        // Append daily forecast
+    
+        
+        //dailyWeatherContainerEl.appendChild(dailyForecastContainerEl);
+        //weeklyForecastContainerEl.appendChild(fiveDayForecast);
+
+
+        
+        eachDayContainer.appendChild(currentDayTitle);
+        eachDayContainer.appendChild(currentIconEl);
+        eachDayContainer.appendChild(currentTempEl);
+        eachDayContainer.appendChild(currentHumidityEl);
+        // Once all items have been appended to the eachDayContainer we can append to the parent.
+        weeklyFlexContainerEL.appendChild(eachDayContainer);
+    
+    };
 
 };
 
@@ -317,25 +283,19 @@ function populate5DayForecast(secondCallData) {
 
 var getWeatherData = function (event , cityClicked) {
 
-
     event.preventDefault()
 
     if (cityClicked) {
-        
          // get value from input elementgit 
         var searchByCity = cityClicked.trim().toLowerCase();
         console.log("The selected by user is: " + searchByCity);
-        alert("This is a click coming from the list as " + searchByCity);
+        //alert("This is a click coming from the list as " + searchByCity);
     } else { // City has been entered from the search bar
         // get value from input elementgit 
         var searchByCity = searchByCityEl.value.trim().toLowerCase();
         console.log("The selected by user is: " + searchByCity);
-        alert("This is a click coming from the search bar as " + searchByCity);
-        
-    }
-
-
-  
+        //alert("This is a click coming from the search bar as " + searchByCity);
+    };
 
     // If field emtpy to not fetch any data
     if (searchByCity == "") {
@@ -345,25 +305,25 @@ var getWeatherData = function (event , cityClicked) {
     } else {  // Field is not empty, lets clear it and proceed
         searchByCityEl.value = "";
 
-    }
+    };
+     
+    // Get array from local storage
+    let citiesLocalStorage = JSON.parse(localStorage.getItem("savedCities"));
 
-      // Get array from local storage
-      let citiesLocalStorage = JSON.parse(localStorage.getItem("savedCities"));
+    // City exist or not. 0 = not, 1 = yes
+    let cityExist = 0;
 
-      // City exist or not. 0 = not, 1 = yes
-      let cityExist = 0;
-  
-  
-      // Check if array is null and create new one again.
-      if (citiesLocalStorage === null) {
-          citiesSearched =  new Array();
-          console.log("new array craeted");
-          
-      } else { // Assign the localStorage values to new (array), not a reference
-          citiesSearched = citiesLocalStorage;
-          console.log("Values from local Storage are: " + citiesSearched);
-      };
-  
+
+    // Check if array is null and create new one again.
+    if (citiesLocalStorage === null) {
+        citiesSearched =  new Array();
+        console.log("new array craeted");
+        
+    } else { // Assign the localStorage values to new (array), not a reference
+        citiesSearched = citiesLocalStorage;
+        console.log("Values from local Storage are: " + citiesSearched);
+    };
+
     // First API call to get latitude and longitude for the oncall api
     let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchByCity + "&appid=32a27c42260b02de3ba5e1466def4861&units=imperial";
 
@@ -371,9 +331,7 @@ var getWeatherData = function (event , cityClicked) {
       openWeatherApiUrl
     ).then(function (weatherResponse) {
         return weatherResponse.json();
-      })
-      .then(function (weatherLatLon) {
-         
+    }).then(function (weatherLatLon) {
         // *** Current day Data *** //
         let latNum = weatherLatLon.coord.lat;
         let lonNum = weatherLatLon.coord.lon;
@@ -386,76 +344,50 @@ var getWeatherData = function (event , cityClicked) {
 
         // Pass all the information already gathered for the 5 day forecast and the html build
         fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed);
-        //alert(latNum + " " + " " + lonNum)
-
+      
         // Asynchronous code to work on the city list.
 
-         // Add the sucessful api call city to the local storage.
-         for (i=0; i < citiesSearched.length; i++) {
+        // Add the sucessful api call city to the local storage.
+        for (i=0; i < citiesSearched.length; i++) {
             if (searchByCity === citiesSearched[i].toLowerCase()) {
                 console.log("city " + citiesSearched[i] + "already exist in array")
                 cityExist =1
                 break;
-            } 
-        }
+            };
+        };
 
         // if the city is new it will add it because the lenght of the array was 0, then add to local storage
         // if it is the second city and is not new then add to local storage
         if (cityExist === 0) {
-            alert("city has been pushed" + ( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ));
-           // citiesLocalStorage=[];
-            //citiesSearched = []; 
-              // localStorage.setItem("savedCities", JSON.stringify(citiesLocalStorage));
+            //alert("city has been pushed" + ( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ));
             citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
             localStorage.setItem("savedCities", JSON.stringify(citiesSearched));
         }
-
         // After all items have been pushed to array populate the cities in html
-
-       // citiesSearched = []; 
-
+        // There is no functionality to clear cities, but it can be added.
+        // citiesSearched = []; 
         populateSavedCities(); // Second after a push has been done.
-
-
-
-
       });
-    console.log('something');
-  }
+};
 
+// Event listener for searching manually and clicking the magnifiying glass.
 
 seachEventHanglerEl.addEventListener("submit",getWeatherData);
 
-
-//userFormEl.addEventListener("submit", formSubmitHandler);
-
-//getWeatherData();
-
-// Make any 
-
-
-
-
 var cityClicked = function (event) {
-
+    // User data value sfrom data-city to know which element was clicked and gets its value
+    // Value will then be passed to our main funciton to get api data.
     let cityClicked = event.target.getAttribute("data-city")
-    //console.log(language);
     if (cityClicked){
-        //getFeaturedRepos(language);
         getWeatherData(event, cityClicked);
-        alert(cityClicked)
-        
-    } 
-
-  
-    
-
+        //alert(cityClicked)
+    } else { // If the value is empty, it should not happen but it is a failsafe.
+        alert("Internal erro found, please email esroleo@gmail.com.\nPlease provide story of issue in order for it to be fixed");
+    };
 };
 
-
+// Event listener for the cities incase they are clicked.
 citiesListContainerEl.addEventListener("click",  cityClicked);
-
-
 
 // Load saved cities to the saved cities section.
 populateSavedCities(); // First call to load the saved cities html.
