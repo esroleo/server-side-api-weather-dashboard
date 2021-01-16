@@ -76,7 +76,7 @@ var getDate = function(unixTime) {
     // Minutes part from the timestamp
    // var minutes = "0" + date.getMinutes();
     // Seconds part from the timestamp
-    //var seconds = "0" + date.getSeconds();
+    //var seconds = "0" + date.getSeconds();6
     
     // Will display time in 10:30:23 format
  //   var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
@@ -212,16 +212,50 @@ var getFiveDayForcast =  function (latNum, lonNum) {
 };
 
 
+function fetchSecondCall(latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed) {
+
+    let openWeatherApiFiveDayUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861&units=imperial"
+    
+    fetch(
+        openWeatherApiFiveDayUrl
+    )
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (secondCallData) {
+      // do something with second call data
+      //  console.log(jsonData);
+
+      // *** Current Day data *** //
+      
+      // Current Day UV
+      let uvIndex = secondCallData.current.uvi
+      console.log(uvIndex)
+         
+      // Populate current day data
+      populateCurrentDayHtml(unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed);
+
+      // Populate 5 day forcast
+     // populate5DayForecast(other)
+    });
+  }
+
+function populateCurrentDayHtml(unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed) {
+    // do something
+  }
+
+  
+function populate5DayForecast(data) {
+    // do something
+  }
 
 
 
-var getWeatherData = function(event) {
 
 
-
+var getWeatherData = function (event) {
 
     event.preventDefault();
-
 
     // get value from input elementgit 
     var searchByCity = searchByCityEl.value.trim().toLowerCase();
@@ -234,182 +268,81 @@ var getWeatherData = function(event) {
         return 
     }
 
+      // Get array from local storage
+      let citiesLocalStorage = JSON.parse(localStorage.getItem("savedCities"));
 
-    // Global variable that will take then input of city and converte it to lowercase and pass it as the query to OpenWeather API.
-    // Hardcoded let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + "scarborough" + "&appid=32a27c42260b02de3ba5e1466def4861";
+      // City exist or not. 0 = not, 1 = yes
+      let cityExist = 0;
+  
+  
+      // Check if array is null and create new one again.
+      if (citiesLocalStorage === null) {
+          citiesSearched =  new Array();
+          console.log("new array craeted");
+          
+      } else { // Assign the localStorage values to new (array), not a reference
+          citiesSearched = citiesLocalStorage;
+          console.log("Values from local Storage are: " + citiesSearched);
+      };
+  
+    // First API call to get latitude and longitude for the oncall api
     let openWeatherApiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + searchByCity + "&appid=32a27c42260b02de3ba5e1466def4861&units=imperial";
-    console.log(openWeatherApiUrl);
-    
 
-    /*
+    fetch(  // Make a fetch request to Wikipedia to get a random article title
+      openWeatherApiUrl
+    ).then(function (weatherResponse) {
+        return weatherResponse.json();
+      })
+      .then(function (weatherLatLon) {
+         
+        // *** Current day Data *** //
+        let latNum = weatherLatLon.coord.lat;
+        let lonNum = weatherLatLon.coord.lon;
+        let unixTimeCurrentDay = weatherLatLon.dt
+        let currentDayIcon = weatherLatLon.weather[0].icon // Icon for the current day
+        let currentTempImperial = weatherLatLon.main.temp // Temperature 
+        let currentHumidity = weatherLatLon.main.humidity // Humidity
+        let currentMPS = weatherLatLon.wind.speed
+        let mphWindSpeed = Math.round(currentMPS * 2.237) // MPH
 
-    .attr('type', 'text') // Text input type
-    .attr('id', `input-${hourIndex}`) // Create a index of the input for track purposes
-    .attr('hour-index', hourIndex); // To be used to change clors of the input task.
-    
-    
+        // Pass all the information already gathered for the 5 day forecast and the html build
+        fetchSecondCall(latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed);
+        //alert(latNum + " " + " " + lonNum)
 
-    var repoEl = document.createElement("a");
-    repoEl.classList = "list-item flex-row justify-space-between align-center";
-    repoEl.setAttribute("href", "./single-repo.html?repo=" + repoName);
-    */
+        // Asynchronous code to work on the city list.
 
-
-    // Clear the element of input and save it to a variable that will display it on the saved cities
-    // Saved cities have will go to local storage
-    // Save it back as the it should be in as first letter capitalized.
-    //citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
-   // citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
-  // console.log("array lenght is " + citiesSearched.length)
-
-
-    // Get array from local storage
-    let citiesLocalStorage = JSON.parse(localStorage.getItem("savedCities"));
-
-    // City exist or not. 0 = not, 1 = yes
-    let cityExist = 0;
-
-
-    // Check if array is null and create new one again.
-    if (citiesLocalStorage === null) {
-        citiesSearched =  new Array();
-        console.log("new array craeted");
-        
-    } else { // Assign the localStorage values to new (array), not a reference
-        citiesSearched = citiesLocalStorage;
-        console.log("Values from local Storage are: " + citiesSearched);
-    };
-
-    /*
-    // Move this block to the first reponse of the API as sucessful to add to local storage only then.
-    for (i=0; i < citiesSearched.length; i++) {
-        if (searchByCity === citiesSearched[i].toLowerCase()) {
-            console.log("city " + citiesSearched[i] + "already exist in array")
-            cityExist =1
-            break;
-        } 
-    }
-
-    //alert(citiesSearched + cityExist)
-
-    if (cityExist === 0) {
-        alert("city has been pushed" + ( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ));
-        citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
-        localStorage.setItem("savedCities", JSON.stringify(citiesSearched));
-    }
-    */
-
-
-
-    fetch(openWeatherApiUrl).then(function(response) {
-
-        if(response.ok) { // Check if ther response is ok, meaning a HTTP 200 response.
-
-            
-                response.json().then(function(jsonData) {
-                console.log("json city returned is: " + jsonData.name); // City Name
-                // console.log("Date") use moment.js for now
-                getDate(jsonData.dt);
-               // alert("full day is" + fullDayDaily);
-                jsonData.weather[0].icon;
-                console.log(jsonData.weather[0].icon); // Icon 
-                let tempImperial = jsonData.main.temp
-               // let fahrenheitTemp = ( (kelvinTemp - 273.15) * (9/5) + 32 ); // Converted to fahrenheit temperature
-              //  console.log("Temperature: " + fahrenheitTemp.toFixed(1) + " °F"); // Fahrenheit temperature
-               console.log("Temperature:" + tempImperial + " °F");
-                let humidity = jsonData.main.humidity + "%"
-                console.log(humidity);
-                let metersPerSecSpeed = jsonData.wind.speed
-                let mphWindSpeed = Math.round(metersPerSecSpeed * 2.237) + " MPH"; // Convert meters per second to miles per hour
-                console.log(mphWindSpeed);
-        
-                // Get lon and lat for the uv
-                let latNum = jsonData.coord.lat;
-                let lonNum = jsonData.coord.lon;
-                
-                console.log("latitude" + latNum);
-                console.log("longitud" + lonNum);
-           
-                // Function call to get the uv information.
-                // Passed the lonNum and latNum parameters as arguments to bne used. 
-                getUVNumber(latNum, lonNum);
-               
-
-                getFiveDayForcast(latNum, lonNum);
-
-                // Add the sucessful api call city to the local storage.
-                for (i=0; i < citiesSearched.length; i++) {
-                    if (searchByCity === citiesSearched[i].toLowerCase()) {
-                        console.log("city " + citiesSearched[i] + "already exist in array")
-                        cityExist =1
-                        break;
-                    } 
-                }
-
-                // if the city is new it will add it because the lenght of the array was 0, then add to local storage
-                // if it is the second city and is not new then add to local storage
-                if (cityExist === 0) {
-                    alert("city has been pushed" + ( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ));
-                   // citiesLocalStorage=[];
-                    //citiesSearched = []; 
-                      // localStorage.setItem("savedCities", JSON.stringify(citiesLocalStorage));
-                    citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
-                    localStorage.setItem("savedCities", JSON.stringify(citiesSearched));
-                }
-
-                // After all items have been pushed to array populate the cities in html
-
-               // citiesSearched = []; 
-
-                populateSavedCities(); // Second after a push has been done.
-
-                
-
-            
-        
-                //console.log("lon " + lonNum + "\nlat " + latNum)
-        
-                // Get lat, lon from daily and store to be used on UV index
-        
-            // https://api.openweathermap.org/data/2.5/onecall?lat=33.441792&lon=-94.037689&exclude=hourly,daily&appid={API key}
-            // let openWeatherApiUVUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861"
-            // let openWeatherApiUVUrl = "http://api.openweathermap.org/data/2.5/uvi?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861"
-            // console.log(openWeatherApiUVUrl);
-        
-                //http://api.openweathermap.org/data/2.5/uvi?lat={lat}&lon={lon}&appid={API key}
-        
-        
-        
-                //(0K − 273.15) × 9/5 + 32 
-                //console.log(jsonData.main.temp);
-                
-                //http://openweathermap.org/img/wn/04d@2x.png
-
-                while(globalCallsState = 0) {
-
-                }
-        
-            })
-
-       
-        } else { // Any other response like 400 500 will display the error.
-            window.alert("Error: " + response.statusText + "\nPlease re-enter a valid city");
-            // Clear the input parameter from the user
-            searchByCityEl.value = "";
-            return;
+         // Add the sucessful api call city to the local storage.
+         for (i=0; i < citiesSearched.length; i++) {
+            if (searchByCity === citiesSearched[i].toLowerCase()) {
+                console.log("city " + citiesSearched[i] + "already exist in array")
+                cityExist =1
+                break;
+            } 
         }
-    }).catch(function(error) { // fetch api way of handling network errors.
-        // Notice this `.catch()` getting chained onto the end of the `.then()` method
-        alert("Unable to connect to OpenWeather");
-        return;
+
+        // if the city is new it will add it because the lenght of the array was 0, then add to local storage
+        // if it is the second city and is not new then add to local storage
+        if (cityExist === 0) {
+            alert("city has been pushed" + ( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ));
+           // citiesLocalStorage=[];
+            //citiesSearched = []; 
+              // localStorage.setItem("savedCities", JSON.stringify(citiesLocalStorage));
+            citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
+            localStorage.setItem("savedCities", JSON.stringify(citiesSearched));
+        }
+
+        // After all items have been pushed to array populate the cities in html
+
+       // citiesSearched = []; 
+
+        populateSavedCities(); // Second after a push has been done.
+
+
+
+
       });
-
-
-
-
-};
-
-
+    console.log('something');
+  }
 
 
 seachEventHanglerEl.addEventListener("submit",getWeatherData);
@@ -423,7 +356,7 @@ seachEventHanglerEl.addEventListener("submit",getWeatherData);
 
 $(document).on('click','a', function(event) {
 
-    alert("element list clicked");
+    alert("element list clicked")
 });
 
 
