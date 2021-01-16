@@ -147,7 +147,7 @@ var getWeatherData = function(event) {
 
                // citiesSearched = []; 
 
-                populateSavedCities(); // Second after a push has been done.
+                populateSavedCities(); // Second call after a push has been done.
 
                 
 

@@ -48,6 +48,7 @@ var populateDailyForecast = function(fullDayDaily, iconWeather, tempImperial, hu
 
     let dailyDetails = document.createElement("h3");
     alert("populateDailyForecast full day is" + fullDayDaily)
+    //( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) )
     dailyDetails.textContent = fullDayDaily;
 
 
@@ -212,7 +213,7 @@ var getFiveDayForcast =  function (latNum, lonNum) {
 };
 
 
-function fetchSecondCall(latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed) {
+function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed) {
 
     let openWeatherApiFiveDayUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861&units=imperial"
     
@@ -231,17 +232,72 @@ function fetchSecondCall(latNum, lonNum, unixTimeCurrentDay, currentDayIcon, cur
       // Current Day UV
       let uvIndex = secondCallData.current.uvi
       console.log(uvIndex)
+
+      // *** Curent date forrmat ** //
+
+      console.log("today is in unix time: " + unixTimeCurrentDay);
+
+
+      let unix_timestamp = unixTimeCurrentDay;
+      // Create a new JavaScript Date object based on the timestamp
+      // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+      var date = new Date(unix_timestamp * 1000);
+      // Hours part from the timestamp
+      var year = date.getFullYear(); // Year format to be used
+      var monthOfYear = date.getMonth() + 1; // month Jan =0, then +1 for actual January for display
+      var dayOfMonth = date.getDate();
+      var fullDayDaily = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")";
+              
+      //console.log("unix day format is " + dayOfMonth);
+    //  console.log("unix month format is " + monthOfYear);
+     // console.log("unix year format is " + year);
+    //  console.log("Full day of unix format is: " + fullDayDaily);
+      alert("Full day of unix format is: " + fullDayDaily)
+   
          
       // Populate current day data
-      populateCurrentDayHtml(unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed);
+      populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed);
 
       // Populate 5 day forcast
      // populate5DayForecast(other)
     });
   }
 
-function populateCurrentDayHtml(unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed) {
-    // do something
+function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed) {
+    // Populate current Day html
+    // Create title element
+    //let imgIcon = <img src="http://openweathermap.org/img/wn/10d@2x.png"></img>
+    let currentDayTitle = document.createElement("h3");
+    currentDayTitle.textContent = ( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) + " " + fullDayDaily);
+
+    let currentIconEl = document.createElement("span")
+   // "<i class='fas fa-check-square status-icon icon-success'></i>"
+    let currentIconSymbol = "http://openweathermap.org/img/wn/" + currentDayIcon + "@2x.png";
+   // alert(currentIconSymbol);
+   currentIconEl.innerHTML = "<img src=" + currentIconSymbol + "></img>";
+
+   currentDayTitle.append(currentIconEl)
+
+
+    
+
+    // Crate p elements to hold the rest of current day informatino
+  //  let currentTemp = 
+
+   // let cityNameEl = document.createElement("a")
+   // cityNameEl.setAttribute("href", "#")
+   //cityNameEl.setAttribute("id", citiesLocalStorage[i]);
+   //// cityNameEl.classList = "list-group-item list-group-item-action list-group-item-primary";
+   // cityNameEl.textContent = citiesLocalStorage[i];
+  //  citiesListContainerEl.appendChild(cityNameEl);
+
+
+
+
+
+    dailyForecastContainerEl.append(currentDayTitle);
+
+
   }
 
   
@@ -306,7 +362,7 @@ var getWeatherData = function (event) {
         let mphWindSpeed = Math.round(currentMPS * 2.237) // MPH
 
         // Pass all the information already gathered for the 5 day forecast and the html build
-        fetchSecondCall(latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed);
+        fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed);
         //alert(latNum + " " + " " + lonNum)
 
         // Asynchronous code to work on the city list.
