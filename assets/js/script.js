@@ -3,7 +3,7 @@ let leftColumnEL = document.querySelector("#left-column")
 //let seachEventHanglerEl = document.querySelector("#cityForm");
 
 // Get all the elements of cities list for event handler
-let citiesListContainerEl = document.querySelector("#cities-list");
+//let citiesListContainerEl = document.querySelector("#cities-list");
 let citiesListContainerBtnEl = document.querySelector(".list-group-item");
 // Daily forcast Containter
 let dailyWeatherContainerEl = document.querySelector("#forecast-output-container"); 
@@ -43,6 +43,19 @@ let seachEventHanglerEl = document.querySelector("#dymCityForm");
 let searchByCityEl = document.querySelector("#city-name");
 
 
+// Left column cities container
+let citiesContainerEl = document.createElement("div");
+citiesContainerEl.setAttribute("id", "dym-cities-list");
+citiesContainerEl.classList = "list-group";
+
+// Append to the left column
+leftColumnEL.appendChild(citiesContainerEl);
+
+// Find the list div container
+let citiesListContainerEl = document.querySelector("#dym-cities-list");
+
+
+
 
 // <form class="city-form-container" id="cityForm"> 
 // <h3> Search for a City</h3>
@@ -75,6 +88,21 @@ var populateSavedCities = function() {
        } else { // we will popualte the saved cities
 
 
+        //<div id="cities-list" class="list-group"></div>        
+
+        // let citiesContainerEl = document.createElement("div");
+        // citiesContainerEl.setAttribute("id", "dym-cities-list");
+        // citiesContainerEl.classList = "list-group";
+
+        // // Find the list div container
+        // let citiesListContainerEl = document.querySelector("#dym-cities-list");
+
+        // // Append to the left column
+
+        // leftColumnEL.appendChild(citiesContainerEl);
+
+
+
        $(".list-group-item").remove(); // Remove all list items from the document with jquery
            
         for (i=0; i< citiesLocalStorage.length;i++) {
@@ -88,7 +116,9 @@ var populateSavedCities = function() {
             cityNameEl.setAttribute("role", "button");
             cityNameEl.classList = "list-group-item list-group-item-action list-group-item-primary";
             cityNameEl.textContent = citiesLocalStorage[i];
-            citiesListContainerEl.appendChild(cityNameEl);
+            //citiesListContainerEl.appendChild(cityNameEl);
+            // dynContainer
+            citiesContainerEl.appendChild(cityNameEl);
         };
           // alert("All saved cities have been populated");
        };
@@ -380,7 +410,8 @@ var cityClicked = function (event) {
 };
 
 // Event listener for the cities incase they are clicked.
-citiesListContainerEl.addEventListener("click",  cityClicked);
+//citiesListContainerEl.addEventListener("click",  cityClicked);
+citiesContainerEl.addEventListener("click", cityClicked)
 
 // Load saved cities to the saved cities section.
 populateSavedCities(); // First call to load the saved cities html.
