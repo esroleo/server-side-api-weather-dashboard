@@ -101,8 +101,6 @@ var populateSavedCities = function() {
 
         // leftColumnEL.appendChild(citiesContainerEl);
 
-
-
        $(".list-group-item").remove(); // Remove all list items from the document with jquery
            
         for (i=0; i< citiesLocalStorage.length;i++) {
@@ -212,6 +210,7 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
 
   
 function populate5DayForecast(secondCallData) {
+    
     $("#weekly-forecast-container").remove(); // Remove all list items from the document with jquery
 
     // Populate current Day html elements
@@ -250,7 +249,7 @@ function populate5DayForecast(secondCallData) {
         var fullDay = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")"; // Date
         var iconWeather = secondCallData.daily[i].weather[0].icon // icon
         let fahrenheitTemp = secondCallData.daily[i].temp.day // Temp @ fahrenheit
-        let humidity = secondCallData.daily[i].humidity + "%"
+        let humidity = secondCallData.daily[i].humidity;
         //console.log(fullDay)
         //console.log(iconWeather)
         //console.log("Temp: " + fahrenheitTemp.toFixed(1) + " °F"); // Fahrenheit temperature
