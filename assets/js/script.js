@@ -1,6 +1,7 @@
 // Get form element value
-let seachEventHanglerEl = document.querySelector("#cityForm");
-let searchByCityEl = document.querySelector("#cityName");
+let leftColumnEL = document.querySelector("#left-column")
+//let seachEventHanglerEl = document.querySelector("#cityForm");
+
 // Get all the elements of cities list for event handler
 let citiesListContainerEl = document.querySelector("#cities-list");
 let citiesListContainerBtnEl = document.querySelector(".list-group-item");
@@ -11,8 +12,57 @@ let dailyWeatherContainerEl = document.querySelector("#forecast-output-container
 //let globalCallsState = 0;
 
 
-var populateSavedCities = function() {
+// Create a form container and containing elements
+let dynFormContainer = document.createElement("form");
+dynFormContainer.setAttribute("id", "dymCityForm");
+dynFormContainer.classList = "city-search-forecast-container";
+leftColumnEL.appendChild(dynFormContainer)
 
+
+// Create H3 element
+let formH3 = document.createElement("h3");
+formH3.textContent = " Search for a City ";
+dynFormContainer.appendChild(formH3);
+
+// Create input element
+let formInput = document.createElement("input");
+formInput.setAttribute("id", "city-name")
+formInput.setAttribute("type", "text");
+formInput.setAttribute("autofocus", "true");
+formInput.classList = "form-input";
+dynFormContainer.appendChild(formInput);
+
+// Create button element
+let formButton = document.createElement("button");
+formButton.setAttribute("type", "submit");
+formButton.classList= ("btn fas fa-search");
+dynFormContainer.appendChild(formButton);
+
+// Find the city form
+let seachEventHanglerEl = document.querySelector("#dymCityForm");
+let searchByCityEl = document.querySelector("#city-name");
+
+
+
+// <form class="city-form-container" id="cityForm"> 
+// <h3> Search for a City</h3>
+// <input name="username" id="cityName" type="text" autofocus="true" class="form-input" />
+// <button type="submit" class="btn fas fa-search"></button>
+// </form>
+
+
+
+// <form class="city-form-container" id="cityForm"> 
+// <h3> Search for a City</h3>
+// <input name="username" id="cityName" type="text" autofocus="true" class="form-input" />
+// <button type="submit" class="btn fas fa-search"></button>
+// </form>
+
+
+
+
+
+var populateSavedCities = function() {
        // Get array from local storage
        let citiesLocalStorage = JSON.parse(localStorage.getItem("savedCities"));
 
