@@ -2,7 +2,14 @@
 let seachEventHanglerEl = document.querySelector("#cityForm");
 let searchByCityEl = document.querySelector("#cityName");
 let citiesListContainerEl = document.querySelector("#cities-list");
-let dailyWeatherContainerEl = document.querySelector("#daily-container");
+// Daily forcast Containter
+let dailyWeatherContainerEl = document.querySelector("#forecast-output-container"); 
+
+// 5 Day forecast container 
+
+
+
+
 //let dailyForecastContainerEl = document.querySelector("#daily-forecast-container")
 
 
@@ -143,7 +150,7 @@ var getFiveDayForcast =  function (latNum, lonNum) {
     // We could use all of it on the new API, but we still need the longitute and latitude, hence will leave as is.
 
     //let openWeatherApiFiveDayUrl ="https://api.openweathermap.org/data/2.5/forecast?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861";
-    let openWeatherApiFiveDayUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861&units=imperial"
+  //  let openWeatherApiFiveDayUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861&units=imperial"
     //let openWeatherApiFiveDayUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&exclude=current,minutely,hourly,alerts&appid=32a27c42260b02de3ba5e1466def4861"
 
     
@@ -156,7 +163,7 @@ var getFiveDayForcast =  function (latNum, lonNum) {
  //   -123.1193
    // 49.2497
 
-
+   let openWeatherApiFiveDayUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861&units=imperial"
 
     fetch(openWeatherApiFiveDayUrl).then(function(response) {
         response.json().then(function(jsonData) {
@@ -211,7 +218,7 @@ var getFiveDayForcast =  function (latNum, lonNum) {
         }
 
         }) ;
-    })
+    });
 
 };
 
@@ -262,7 +269,7 @@ function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, curre
       populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed, uvIndex);
 
       // Populate 5 day forcast
-     // populate5DayForecast(other)
+      populate5DayForecast(secondCallData)
     });
   }
 
@@ -277,20 +284,14 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
   //  <div id="daily-forecast-container" class="borderDiv">
 
    // </div>
+   
+
+    
 
     let dailyForecastContainerEl = document.createElement("div");
     dailyForecastContainerEl.setAttribute("id", "daily-forecast-container");
     dailyForecastContainerEl.classList = "borderDiv";
-    //cityNameEl.classList = "list-group-item list-group-item-action list-group-item-primary";
 
-    // Locate the element
-
-    //let dailyForecastContainerEl = document.querySelector("#daily-forecast-container")
-
-
-
-    // Create title element
-    //let imgIcon = <img src="http://openweathermap.org/img/wn/10d@2x.png"></img>
     let currentDayTitle = document.createElement("h3");
     currentDayTitle.textContent = ( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) + " " + fullDayDaily);
 
@@ -311,14 +312,7 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
     currentHumidityEl.textContent = "Humidity: " + currentHumidity + "%";
     currentWinSpEl.textContent = "Wind Speed: " + currentMPS + " MPH";
     currentUvIEl.textContent = "UV Index: " + uvIndex;
-
-
    
-
-
-    
-
-    
   //  let currentTemp = 
 
    // let cityNameEl = document.createElement("a")
@@ -330,6 +324,8 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
 
   $("#daily-forecast-container").remove(); // Remove all list items from the document with jquery
 
+    // *** Append to forecast output container
+    // Append daily forecast
     dailyWeatherContainerEl.appendChild(dailyForecastContainerEl);
     dailyForecastContainerEl.appendChild(currentDayTitle);
     dailyForecastContainerEl.appendChild(currentTempEl);
@@ -343,9 +339,137 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
   }
 
   
-function populate5DayForecast(data) {
+function populate5DayForecast(secondCallData) {
     // do something
-  }
+
+    console.log(secondCallData);
+    console.log("5 Day forecast values")
+
+   let weeklyForecastContainerEl = document.createElement("div");
+    weeklyForecastContainerEl.setAttribute("id", "weekly-forecast-container");
+    weeklyForecastContainerEl.classList = "borderDiv";
+
+    
+    let fiveDayForecast = document.createElement("h3");
+    fiveDayForecast.textContent = "5-Day Forecast:"
+
+    dailyWeatherContainerEl.appendChild(weeklyForecastContainerEl);
+    weeklyForecastContainerEl.appendChild(fiveDayForecast);
+
+    // Create a div just to hold the 5 day as a flex row 
+
+    let weeklyFlexContainerEL = document.createElement("div");
+    weeklyFlexContainerEL.classList = "weekly-flex-conatiner"
+
+    weeklyForecastContainerEl.appendChild(weeklyFlexContainerEL);
+
+
+
+    //fiveDayForecast.appendChild(weeklyForecastContainerEl);
+
+    //for (i=0; i< jsonData.daily.length; i++) {
+        for (i=1; i <= 5; i++) {
+
+            let unixTime = secondCallData.daily[i].dt;
+            console.log("Correct 5 day forcast" + unixTime)
+        
+            let unix_timestamp = unixTime;
+            // Create a new JavaScript Date object based on the timestamp
+            // multiplied by 1000 so that the argument is in milliseconds, not seconds.
+            var date = new Date(unix_timestamp * 1000);
+            // Hours part from the timestamp
+            var year = date.getFullYear();
+            var monthOfYear = date.getMonth() + 1;
+            var dayOfMonth = date.getDate();
+        
+            // Values to be displayed
+            var fullDay = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")"; // Date
+            var iconWeather = secondCallData.daily[i].weather[0].icon // icon
+            //let kelvinTemp = jsonData.daily[i].temp.day // temp Kelvin
+            let fahrenheitTemp = secondCallData.daily[i].temp.day // temp Kelvin
+            //let fahrenheitTemp = ( (kelvinTemp - 273.15) * (9/5) + 32 ); // Converted to fahrenheit temperature
+            //let fahrenheitTemp = ( kelvinTemp * (9/5) - 459 ); // Converted to fahrenheit temperature
+            let humidity = secondCallData.daily[i].humidity + "%"
+            
+                
+            console.log(fullDay)
+            console.log(iconWeather)
+            //console.log("Temp: " + fahrenheitTemp.toFixed(1) + " °F"); // Fahrenheit temperature
+            console.log("Temp: " + fahrenheitTemp + " °F")
+            console.log("Humidity: " + humidity);
+        
+            // *** Create 5 Day elements and display them on screen.
+        
+            // Create a div to hold each day of the 5 day weekly forecast.
+        
+            let eachDayContainer = document.createElement("div");
+            eachDayContainer.setAttribute("id", ("day=" + [i]));
+            eachDayContainer.classList = "border-div-five-day-forecast";
+            
+        
+            // let dailyForecastContainerEl = document.createElement("div");
+            // dailyForecastContainerEl.setAttribute("id", "daily-forecast-container");
+            // dailyForecastContainerEl.classList = "borderDiv";
+        
+        
+        
+            let currentDayTitle = document.createElement("p");
+            currentDayTitle.textContent = (fullDay);
+        
+        
+        //     let currentIconEl = document.createElement("span")
+        //    // "<i class='fas fa-check-square status-icon icon-success'></i>"
+        //     let currentIconSymbol = "http://openweathermap.org/img/wn/" + iconWeather + "@2x.png";
+        //    // alert(currentIconSymbol);
+        //    currentIconEl.innerHTML = "<img src=" + currentIconSymbol + "></img>";
+        //    currentDayTitle.append(currentIconEl)
+
+  
+
+            // a small span to hold the icon
+
+            let iconSpan = document.createElement("p");
+            iconSpan.textContent = "";
+
+            let currentIconEl = document.createElement("span")
+            // "<i class='fas fa-check-square status-icon icon-success'></i>"
+            let currentIconSymbol = "http://openweathermap.org/img/wn/" + iconWeather + "@2x.png";
+            // alert(currentIconSymbol);
+            currentIconEl.innerHTML = "<img src=" + currentIconSymbol + "></img>";
+            iconSpan.append(currentIconEl)
+
+        
+            // Create p elements to hold the rest of current day informatino
+            let currentTempEl = document.createElement("p");
+            let currentHumidityEl = document.createElement("p");
+          
+            currentTempEl.textContent = "Temperature: " + fahrenheitTemp + " °F";
+            currentHumidityEl.textContent = "Humidity: " + humidity + "%";
+        
+            
+          //$("#day=" + [i] + "\"").remove(); // Remove all list items from the document with jquery
+        
+          // *** Append to forecast output container
+          // Append daily forecast
+        
+          
+          //dailyWeatherContainerEl.appendChild(dailyForecastContainerEl);
+          //weeklyForecastContainerEl.appendChild(fiveDayForecast);
+
+
+          
+          eachDayContainer.appendChild(currentDayTitle);
+          eachDayContainer.appendChild(currentIconEl);
+          eachDayContainer.appendChild(currentTempEl);
+          eachDayContainer.appendChild(currentHumidityEl);
+          // Once all items have been appended to the eachDayContainer we can append to the parent.
+          weeklyFlexContainerEL.appendChild(eachDayContainer);
+        
+        };
+    
+   
+
+};
 
 
 

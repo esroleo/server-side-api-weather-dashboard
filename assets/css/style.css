@@ -16,7 +16,7 @@ header {
 }
 
 
-.city-search-form-container{
+.city-search-forecast-container{
     display: flex;
     flex-wrap: wrap;
    /* flex-direction: column;*/
@@ -71,8 +71,29 @@ outline: none !important;
     padding-left: 10px;
     margin-bottom: 18px;  
     border:groove rgba(102, 102, 153, 0.2);
-  
+  }
 
+  .weekly-flex-conatiner{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    /* 
+    justify-content: space-around;
+    justify-content: flex-end; 
+     list-style: none;
+    padding-right: 0px;
+    */
+    align-items: center;
+   
+  }
+
+  
+  .border-div-five-day-forecast {
+    background-color: dodgerblue;
+    color:white;
+    padding-left: 10px;
+    margin-bottom: 18px;  
+    border:groove rgba(102, 102, 153, 0.2);
   }
     
 
