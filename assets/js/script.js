@@ -1,11 +1,13 @@
 // Get form element value
 let seachEventHanglerEl = document.querySelector("#cityForm");
 let searchByCityEl = document.querySelector("#cityName");
+// Get all the elements of cities list for event handler
 let citiesListContainerEl = document.querySelector("#cities-list");
+let citiesListContainerBtnEl = document.querySelector(".list-group-item");
+//let citiesListContainerEl = document.querySelector("button");
 // Daily forcast Containter
 let dailyWeatherContainerEl = document.querySelector("#forecast-output-container"); 
 
-// 5 Day forecast container 
 
 
 
@@ -41,12 +43,15 @@ var populateSavedCities = function() {
 
             let cityNameEl = document.createElement("a")
             cityNameEl.setAttribute("href", "#")
+            cityNameEl.setAttribute("data-city", citiesLocalStorage[i]);
             cityNameEl.setAttribute("id", citiesLocalStorage[i]);
+            cityNameEl.setAttribute("role", "button");
             cityNameEl.classList = "list-group-item list-group-item-action list-group-item-primary";
             cityNameEl.textContent = citiesLocalStorage[i];
             citiesListContainerEl.appendChild(cityNameEl);
-        
-            }
+
+       
+        }
         
            alert("All saved cities have been populated");
        };
@@ -54,178 +59,11 @@ var populateSavedCities = function() {
 
 };
 
-var populateDailyForecast = function(fullDayDaily, iconWeather, tempImperial, humidity, mphWindSpeed, uvIndex) {
-
-    let dailyDetails = document.createElement("h3");
-    alert("populateDailyForecast full day is" + fullDayDaily)
-    //( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) )
-    dailyDetails.textContent = fullDayDaily;
-
-
-   
-    dailyForecastContainerEl.appendChild(dailyDetails);
-
-}
-
-
-
-var getDate = function(unixTime) {
-
-    console.log("today is in unix time: " + unixTime);
-
-
-    let unix_timestamp = unixTime;
-    // Create a new JavaScript Date object based on the timestamp
-    // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-    var date = new Date(unix_timestamp * 1000);
-    // Hours part from the timestamp
-    var year = date.getFullYear();
-    var monthOfYear = date.getMonth() + 1;
-    var dayOfMonth = date.getDate();
-    var fullDayDaily = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")";
-    //var hours = date.getHours();
-    // Minutes part from the timestamp
-   // var minutes = "0" + date.getMinutes();
-    // Seconds part from the timestamp
-    //var seconds = "0" + date.getSeconds();6
-    
-    // Will display time in 10:30:23 format
- //   var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
- 
-    
-    console.log("unix day format is " + dayOfMonth);
-    console.log("unix month format is " + monthOfYear);
-    console.log("unix year format is " + year);
-    console.log("Full day of unix format is: " + fullDayDaily);
- 
-
-  //  const birthday = new Date('August 19, 1975 23:15:30');
-      //  const date1 = birthday.getDate();
-
-     ///   console.log(date1);
-        // expected output: 19
-
-
-    
-        //const birthday = new Date('August 19, 1975 23:15:30');
-        //const date1 = birthday.getDate();
-        globalTestVariable = fullDayDaily + "this is the full variable date";
-    return fullDayDaily
-        
-
-
-}
-
-
-// expected output: 19
-
-
-var getUVNumber =  function (latNum, lonNum) {
-
-    // This section is only taking the uvi of the new openweather API.
-    // We could use all of it on the new API, but we still need the longitute and latitude, hence will leave as is.
-    //"lon": -123.1193,
-    //"lat": 49.2497
-    //lat = 43.7001
-    //lon = -79.4163
-    //https://api.openweathermap.org/data/2.5/onecall?lat=43.7001&lon=-79.4163&appid=32a27c42260b02de3ba5e1466def4861
-    
-
-    let openWeatherApiUVUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + latNum + "&lon=" + lonNum + "&appid=32a27c42260b02de3ba5e1466def4861"
-    //let openWeatherApiUVUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=-123.11&lon=49.24&appid=32a27c42260b02de3ba5e1466def4861"
-    fetch(openWeatherApiUVUrl).then(function(response) {
-        response.json().then(function(jsonData) {
-          //  console.log(jsonData);
-          let uvIndex = jsonData.current.uvi
-           console.log(jsonData.current.uvi)
-           return uvIndex
-        });
-    });
-
-};
-
-var getFiveDayForcast =  function (latNum, lonNum) {
-
-    // This section is only taking the uvi of the new openweather API.
-    // We could use all of it on the new API, but we still need the longitute and latitude, hence will leave as is.
-
-    //let openWeatherApiFiveDayUrl ="https://api.openweathermap.org/data/2.5/forecast?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861";
-  //  let openWeatherApiFiveDayUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861&units=imperial"
-    //let openWeatherApiFiveDayUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&exclude=current,minutely,hourly,alerts&appid=32a27c42260b02de3ba5e1466def4861"
-
-    
-
-
-    //https://api.openweathermap.org/data/2.5/weather?q=toronto&appid=32a27c42260b02de3ba5e1466def4861
-    //let openWeatherApiFiveDayUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861"
-   // let openWeatherApiFiveDayUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=-123.1193&lon=49.2497&exclude=current,minutely,hourly,alerts&appid=32a27c42260b02de3ba5e1466def4861"
-
- //   -123.1193
-   // 49.2497
-
-   let openWeatherApiFiveDayUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861&units=imperial"
-
-    fetch(openWeatherApiFiveDayUrl).then(function(response) {
-        response.json().then(function(jsonData) {
-
-            console.log("5 day forcast information\n")
-            console.log(openWeatherApiFiveDayUrl);
-           //console.log(jsonData);
-           // for each output check the dt_text and get the daily for one day only.
-          
-           // Check each one
-
-
-
-
-           //for (i=0; i< jsonData.daily.length; i++) {
-            for (i=0; i <= 5; i++) {
-
-            let unixTime = jsonData.daily[i].dt;
-            console.log("Correct 5 day forcast" + unixTime)
-
-            let unix_timestamp = unixTime;
-            // Create a new JavaScript Date object based on the timestamp
-            // multiplied by 1000 so that the argument is in milliseconds, not seconds.
-            var date = new Date(unix_timestamp * 1000);
-            // Hours part from the timestamp
-            var year = date.getFullYear();
-            var monthOfYear = date.getMonth() + 1;
-            var dayOfMonth = date.getDate();
-
-            // Values to be displayed
-            var fullDay = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")"; // Date
-            var iconWeather = jsonData.daily[i].weather[0].icon // icon
-            //let kelvinTemp = jsonData.daily[i].temp.day // temp Kelvin
-            let fahrenheitTemp = jsonData.daily[i].temp.day // temp Kelvin
-            //let fahrenheitTemp = ( (kelvinTemp - 273.15) * (9/5) + 32 ); // Converted to fahrenheit temperature
-            //let fahrenheitTemp = ( kelvinTemp * (9/5) - 459 ); // Converted to fahrenheit temperature
-            let humidity = jsonData.daily[i].humidity + "%"
-
-            
-             
-            console.log(fullDay)
-            console.log(iconWeather)
-            //console.log("Temp: " + fahrenheitTemp.toFixed(1) + " °F"); // Fahrenheit temperature
-            console.log("Temp: " + fahrenheitTemp + " °F")
-            console.log("Humidity: " + humidity);
-
-
-
-
-       
-
-        }
-
-        }) ;
-    });
-
-};
 
 
 function fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed) {
 
-    let openWeatherApiFiveDayUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + lonNum + "&lon=" + latNum + "&appid=32a27c42260b02de3ba5e1466def4861&units=imperial"
+    let openWeatherApiFiveDayUrl =  "https://api.openweathermap.org/data/2.5/onecall?lat=" + latNum + "&lon=" + lonNum + "&appid=32a27c42260b02de3ba5e1466def4861&units=imperial"
     
     fetch(
         openWeatherApiFiveDayUrl
@@ -345,6 +183,8 @@ function populate5DayForecast(secondCallData) {
     console.log(secondCallData);
     console.log("5 Day forecast values")
 
+   $("#weekly-forecast-container").remove(); // Remove all list items from the document with jquery
+
    let weeklyForecastContainerEl = document.createElement("div");
     weeklyForecastContainerEl.setAttribute("id", "weekly-forecast-container");
     weeklyForecastContainerEl.classList = "borderDiv";
@@ -447,7 +287,7 @@ function populate5DayForecast(secondCallData) {
             currentHumidityEl.textContent = "Humidity: " + humidity + "%";
         
             
-          //$("#day=" + [i] + "\"").remove(); // Remove all list items from the document with jquery
+          
         
           // *** Append to forecast output container
           // Append daily forecast
@@ -475,19 +315,36 @@ function populate5DayForecast(secondCallData) {
 
 
 
-var getWeatherData = function (event) {
+var getWeatherData = function (event , cityClicked) {
 
-    event.preventDefault();
 
-    // get value from input elementgit 
-    var searchByCity = searchByCityEl.value.trim().toLowerCase();
-    console.log("The selected by user is: " + searchByCity);
+    event.preventDefault()
+
+    if (cityClicked) {
+        
+         // get value from input elementgit 
+        var searchByCity = cityClicked.trim().toLowerCase();
+        console.log("The selected by user is: " + searchByCity);
+        alert("This is a click coming from the list as " + searchByCity);
+    } else { // City has been entered from the search bar
+        // get value from input elementgit 
+        var searchByCity = searchByCityEl.value.trim().toLowerCase();
+        console.log("The selected by user is: " + searchByCity);
+        alert("This is a click coming from the search bar as " + searchByCity);
+        
+    }
+
+
+  
 
     // If field emtpy to not fetch any data
     if (searchByCity == "") {
         alert("Please do not leave city name blank");
         searchByCityEl.value = "";
         return 
+    } else {  // Field is not empty, lets clear it and proceed
+        searchByCityEl.value = "";
+
     }
 
       // Get array from local storage
@@ -576,10 +433,28 @@ seachEventHanglerEl.addEventListener("submit",getWeatherData);
 
 // Make any 
 
-$(document).on('click','a', function(event) {
 
-    alert("element list clicked")
-});
+
+
+var cityClicked = function (event) {
+
+    let cityClicked = event.target.getAttribute("data-city")
+    //console.log(language);
+    if (cityClicked){
+        //getFeaturedRepos(language);
+        getWeatherData(event, cityClicked);
+        alert(cityClicked)
+        
+    } 
+
+  
+    
+
+};
+
+
+citiesListContainerEl.addEventListener("click",  cityClicked);
+
 
 
 // Load saved cities to the saved cities section.
