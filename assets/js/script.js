@@ -4,6 +4,7 @@ let searchByCityEl = document.querySelector("#cityName");
 let citiesListContainerEl = document.querySelector("#cities-list");
 let dailyForecastContainerEl = document.querySelector("#daily-forecast-container")
 let globalTestVariable = "gloabl variable";
+let globalCallsState = 0;
 
 
 var populateSavedCities = function() {
@@ -305,7 +306,6 @@ var getWeatherData = function(event) {
         if(response.ok) { // Check if ther response is ok, meaning a HTTP 200 response.
 
             
-            
                 response.json().then(function(jsonData) {
                 console.log("json city returned is: " + jsonData.name); // City Name
                 // console.log("Date") use moment.js for now
@@ -332,7 +332,7 @@ var getWeatherData = function(event) {
            
                 // Function call to get the uv information.
                 // Passed the lonNum and latNum parameters as arguments to bne used. 
-                let uvIndex = getUVNumber(latNum, lonNum);
+                getUVNumber(latNum, lonNum);
                
 
                 getFiveDayForcast(latNum, lonNum);
@@ -384,13 +384,14 @@ var getWeatherData = function(event) {
                 //console.log(jsonData.main.temp);
                 
                 //http://openweathermap.org/img/wn/04d@2x.png
-        
-            });
 
-            alert(globalTestVariable);
+                while(globalCallsState = 0) {
 
-          
+                }
         
+            })
+
+       
         } else { // Any other response like 400 500 will display the error.
             window.alert("Error: " + response.statusText + "\nPlease re-enter a valid city");
             // Clear the input parameter from the user
@@ -422,10 +423,7 @@ seachEventHanglerEl.addEventListener("submit",getWeatherData);
 
 $(document).on('click','a', function(event) {
 
-    alert("element list clicked")
-
-
-
+    alert("element list clicked");
 });
 
 
