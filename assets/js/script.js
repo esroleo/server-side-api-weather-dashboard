@@ -268,12 +268,14 @@ var getWeatherData = function (event , cityClicked) {
 
     if (cityClicked) {
          // get value from input elementgit 
-        var searchByCity = cityClicked.trim().toLowerCase();
+        // *** var searchByCity = cityClicked.trim().toLowerCase();
+        var searchByCity = cityClicked.trim();
         //console.log("The selected by user is: " + searchByCity);
         //alert("This is a click coming from the list as " + searchByCity);
     } else { // City has been entered from the search bar
         // get value from input elementgit 
-        var searchByCity = searchByCityEl.value.trim().toLowerCase();
+        // *** var searchByCity = searchByCityEl.value.trim().toLowerCase();
+        var searchByCity = searchByCityEl.value.trim();
         //console.log("The selected by user is: " + searchByCity);
         //alert("This is a click coming from the search bar as " + searchByCity);
     };
@@ -335,7 +337,7 @@ var getWeatherData = function (event , cityClicked) {
         // Asynchronous code to work on the city list.
         // Add the sucessful api call city to the local storage.
         for (i=0; i < citiesSearched.length; i++) {
-            if (searchByCity === citiesSearched[i].toLowerCase()) {
+            if (searchByCity.toLowerCase() === citiesSearched[i].toLowerCase()) {
                 //console.log("city " + citiesSearched[i] + "already exist in array")
                 cityExist =1
                 break;
@@ -344,12 +346,16 @@ var getWeatherData = function (event , cityClicked) {
         // if the city is new it will add it because the lenght of the array was 0, then add to local storage
         // if it is the second city and is not new then add to local storage
         if (cityExist === 0) {
-            //alert("city has been pushed" + ( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ));
-            citiesSearched.push( searchByCity.charAt(0).toUpperCase() + searchByCity.slice(1) ) ;
+            // Take a word and coverted to Title Case --> Credits to https://stackoverflow.com/questions/32589197/how-can-i-capitalize-the-first-letter-of-each-word-in-a-string-using-javascript
+            //  – Patrick Michaelsen
+            citiesSearched.push(searchByCity.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' '));
+            
+            // Save to local storage
             localStorage.setItem("savedCities", JSON.stringify(citiesSearched));
         }
         // After all items have been pushed to array populate the cities in html
         // There is no functionality to clear cities, but it can be added.
+        // You can also delete the savedCities Key using Chrome Dev Tools.
         // citiesSearched = []; 
         populateSavedCities(); // Second after a push has been done.
       }).catch(function(error) { // fetch api way of handling network errors.
