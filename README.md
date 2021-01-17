@@ -13,6 +13,10 @@
 
 This application is to catch your current and five day forecast in one view. It also saves your cities searched for later use.
 
+Desktop screen > 1298x:
+
+![Top-Page-Area](./assets/images/landing-page-desktop-big.JPG?raw=true "landing-page-desktop-big")
+
 Desktop screen 1298px:
 
 ![Top-Page-Area](./assets/images/landing-page-desktip-1298-plus.JPG?raw=true "landing-page-desktip-1298-plus")
