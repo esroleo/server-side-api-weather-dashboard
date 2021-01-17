@@ -331,11 +331,9 @@ var getWeatherData = function (event , cityClicked) {
         let currentMPS = weatherLatLon.wind.speed
         let mphWindSpeed = Math.round(currentMPS * 2.237) // MPH
 
-        // Pass all the information already gathered for the 5 day forecast and the html build
-        fetchSecondCall(searchByCity, latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed);
-      
-        // Asynchronous code to work on the city list.
+        
         // Add the sucessful api call city to the local storage.
+        // Validate if city is new.
         for (i=0; i < citiesSearched.length; i++) {
             if (searchByCity.toLowerCase() === citiesSearched[i].toLowerCase()) {
                 //console.log("city " + citiesSearched[i] + "already exist in array")
@@ -346,14 +344,19 @@ var getWeatherData = function (event , cityClicked) {
         // if the city is new it will add it because the lenght of the array was 0, then add to local storage
         // if it is the second city and is not new then add to local storage
         if (cityExist === 0) {
-            // Take a word and coverted to Title Case --> Credits to https://stackoverflow.com/questions/32589197/how-can-i-capitalize-the-first-letter-of-each-word-in-a-string-using-javascript
+            // Take a word and coverted to capitalizaion case --> Credits to https://stackoverflow.com/questions/32589197/how-can-i-capitalize-the-first-letter-of-each-word-in-a-string-using-javascript
             //  – Patrick Michaelsen
             citiesSearched.push(searchByCity.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' '));
             
             // Save to local storage
             localStorage.setItem("savedCities", JSON.stringify(citiesSearched));
         }
-        // After all items have been pushed to array populate the cities in html
+
+        // Pass all the information already gathered for the 5 day forecast and the html build
+        // Pass searchByCity to the second call as capitalized case
+        fetchSecondCall(searchByCity.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.substring(1)).join(' '), latNum, lonNum, unixTimeCurrentDay, currentDayIcon, currentTempImperial, currentHumidity, currentMPS, mphWindSpeed);
+      
+        // *** After all items have been pushed to array populate the cities in html
         // There is no functionality to clear cities, but it can be added.
         // You can also delete the savedCities Key using Chrome Dev Tools.
         // citiesSearched = []; 
