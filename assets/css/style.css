@@ -89,6 +89,23 @@ outline: none !important;
 }
 
 /* This will be applied on any screen smaller than 768px */
+@media screen and (max-width: 1024px) {
+
+  .form-input {
+    flex-grow: 1;
+
+  }
+
+  .btn {
+    margin-top: 5px;
+    margin-bottom: 1;
+    flex-grow: 1;
+    }
+  
+
+}
+
+/* This will be applied on any screen smaller than 768px */
 @media screen and (max-width: 768px) {
 
   h3 {
@@ -98,7 +115,12 @@ outline: none !important;
   img {
     width: 25%;
   }
-  
+
+  .form-input {
+    width: 80%;
+  }
+
+
   .btn {
   margin-top: 5px;
   margin-bottom: 1;
