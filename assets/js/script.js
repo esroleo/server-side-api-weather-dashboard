@@ -158,7 +158,8 @@ function populateCurrentDayHtml(searchByCity, fullDayDaily, currentDayIcon, curr
     let currentUvIEl = document.createElement("p");
 
     // Assign helments text content
-    currentTempEl.textContent = "Temperature: " + currentTempImperial + " °F";
+    // Round temperature to no decimal places
+    currentTempEl.textContent = "Temperature: " + (currentTempImperial.toFixed(1)) + " °F";
     currentHumidityEl.textContent = "Humidity: " + currentHumidity + "%";
     currentWinSpEl.textContent = "Wind Speed: " + currentMPS + " MPH";
     currentUvIEl.textContent = "UV Index: " + uvIndex;
@@ -213,7 +214,7 @@ function populate5DayForecast(secondCallData) {
         var dayOfMonth = date.getDate();
     
         // Values to be displayed
-        var fullDay = "(" + (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear() + ")"; // Date
+        var fullDay = (date.getMonth() + 1) + "/" + date.getDate() + "/"  + date.getFullYear(); // Date
         var iconWeather = secondCallData.daily[i].weather[0].icon // icon
         let fahrenheitTemp = secondCallData.daily[i].temp.day // Temp @ fahrenheit
         let humidity = secondCallData.daily[i].humidity;
@@ -246,7 +247,7 @@ function populate5DayForecast(secondCallData) {
         let currentTempEl = document.createElement("p");
         let currentHumidityEl = document.createElement("p");
         
-        currentTempEl.textContent = "Temperature: " + fahrenheitTemp + " °F";
+        currentTempEl.textContent = "Temperature: " +  (fahrenheitTemp.toFixed(2)) + " °F";
         currentHumidityEl.textContent = "Humidity: " + humidity + "%";
           
         // *** Append to forecast output container
