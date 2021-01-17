@@ -89,7 +89,12 @@ outline: none !important;
 }
 
 /* This will be applied on any screen smaller than 768px */
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1025) {
+
+  h3 {
+    font-size: 22px;
+  }
+
 
   .form-input {
     flex-grow: 1;
@@ -102,7 +107,6 @@ outline: none !important;
     flex-grow: 1;
     }
   
-
 }
 
 /* This will be applied on any screen smaller than 768px */
@@ -117,7 +121,7 @@ outline: none !important;
   }
 
   .form-input {
-    width: 80%;
+    width: 100%;
   }
 
 
