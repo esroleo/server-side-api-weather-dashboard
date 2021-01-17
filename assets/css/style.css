@@ -15,6 +15,7 @@ header {
     margin-bottom: 25px;
 }
 
+
 .city-search-forecast-container{
     display: flex;
     flex-wrap: wrap;
@@ -70,6 +71,14 @@ outline: none !important;
   margin-bottom: 18px;  
   border:groove rgba(102, 102, 153, 0.2);
 }
+
+.border-Div-right-column {
+  background-color: white;
+  padding-left: 3px;
+  padding-right: 3px;
+  margin-bottom: 10px;
+}
+
 
 .list-group {
   margin-bottom: 10px;

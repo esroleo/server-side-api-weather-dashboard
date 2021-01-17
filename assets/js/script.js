@@ -184,7 +184,8 @@ function populate5DayForecast(secondCallData) {
     // Populate current Day html elements
     let weeklyForecastContainerEl = document.createElement("div");
     weeklyForecastContainerEl.setAttribute("id", "weekly-forecast-container");
-    weeklyForecastContainerEl.classList = "borderDiv";
+    //weeklyForecastContainerEl.classList = "borderDiv";
+    weeklyForecastContainerEl.classList = "border-Div-right-column"; 
 
     let fiveDayForecast = document.createElement("h3");
     fiveDayForecast.textContent = "5-Day Forecast:"
