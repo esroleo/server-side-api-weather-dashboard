@@ -40,8 +40,16 @@ outline: none !important;
     -moz-box-shadow: 0 0 3px green !important;
     -webkit-box-shadow: 0 0 3px green !important;
 }
+
+.form-input {
+  flex-grow: 1;
+  margin-right: 5px;
+  margin-bottom: 5px;
+
+}
     
 .btn {
+    flex-grow: 2;
     font-size: 1.5em;
     text-decoration:none;
     border: none;
