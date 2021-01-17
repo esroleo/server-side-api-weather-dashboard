@@ -106,10 +106,19 @@ outline: none !important;
 }
 
 /* This will be applied on any screen smaller than 768px */
-@media screen and (max-width: 1025) {
+@media screen and (max-width: 1330px) {
 
   h3 {
-    font-size: 22px;
+    font-size: 20px;
+  }
+
+}
+
+/* This will be applied on any screen smaller than 768px */
+@media screen and (max-width: 1025px) {
+
+  h3 {
+    font-size: 20px;
   }
 
 
@@ -124,6 +133,18 @@ outline: none !important;
     flex-grow: 1;
     }
   
+}
+
+/* This will be applied on any screen smaller than 768px */
+@media screen and (max-width: 900px) {
+
+  h3 {
+    font-size: 20px;
+  }
+
+
+
+
 }
 
 /* This will be applied on any screen smaller than 768px */
