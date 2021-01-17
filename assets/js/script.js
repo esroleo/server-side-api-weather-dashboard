@@ -56,25 +56,6 @@ let citiesListContainerEl = document.querySelector("#dym-cities-list");
 
 
 
-
-// <form class="city-form-container" id="cityForm"> 
-// <h3> Search for a City</h3>
-// <input name="username" id="cityName" type="text" autofocus="true" class="form-input" />
-// <button type="submit" class="btn fas fa-search"></button>
-// </form>
-
-
-
-// <form class="city-form-container" id="cityForm"> 
-// <h3> Search for a City</h3>
-// <input name="username" id="cityName" type="text" autofocus="true" class="form-input" />
-// <button type="submit" class="btn fas fa-search"></button>
-// </form>
-
-
-
-
-
 var populateSavedCities = function() {
        // Get array from local storage
        let citiesLocalStorage = JSON.parse(localStorage.getItem("savedCities"));
@@ -86,20 +67,6 @@ var populateSavedCities = function() {
            // It does note exist, therefore, no items to add to saved cities
            //console.log("No items to add");  
        } else { // we will popualte the saved cities
-
-
-        //<div id="cities-list" class="list-group"></div>        
-
-        // let citiesContainerEl = document.createElement("div");
-        // citiesContainerEl.setAttribute("id", "dym-cities-list");
-        // citiesContainerEl.classList = "list-group";
-
-        // // Find the list div container
-        // let citiesListContainerEl = document.querySelector("#dym-cities-list");
-
-        // // Append to the left column
-
-        // leftColumnEL.appendChild(citiesContainerEl);
 
        $(".list-group-item").remove(); // Remove all list items from the document with jquery
            
