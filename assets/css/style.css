@@ -15,13 +15,11 @@ header {
     margin-bottom: 25px;
 }
 
-
 .city-search-forecast-container{
     display: flex;
     flex-wrap: wrap;
    /* flex-direction: column;*/
    justify-content: space-between;
-    
 }
 
 .city-form-container{
@@ -37,14 +35,12 @@ outline-offset: 0px !important;
 outline: none !important;
 }
 
-
 #city-name input:focus {
     box-shadow: 0 0 10px dodgerblue !important;
     -moz-box-shadow: 0 0 3px green !important;
     -webkit-box-shadow: 0 0 3px green !important;
 }
     
-
 .btn {
     font-size: 1.5em;
     text-decoration:none;
@@ -52,17 +48,12 @@ outline: none !important;
     outline: none;
     background-color: dodgerblue;
     color: white;
- /*
-    box-shadow: 3px 3px var(--dark);
-    transform: translate(-1px, -1px);
-    */
     margin-bottom: 6px;
   }
 
 .fa-search:hover{
   color: #FFD700;
 }
-
 
 .borderDiv {
   background-color: white;
@@ -108,32 +99,22 @@ outline: none !important;
     width: 25%;
   }
   
-
   .btn {
   margin-top: 5px;
   margin-bottom: 1;
   flex-grow: 1;
-  
+  }
 
-}
+  .weekly-flex-conatiner{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+  }
 
-.weekly-flex-conatiner{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content:center;
- 
-}
-
-.border-div-five-day-forecast {
-  padding-left: 0px;
-  padding-right: 0px;
-  margin-bottom: 5px;
-}
-
-
-
-
-
-
+  .border-div-five-day-forecast {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-bottom: 5px;
+  }
 }
 
