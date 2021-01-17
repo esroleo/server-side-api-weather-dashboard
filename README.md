@@ -55,7 +55,7 @@ https://esroleo.github.io/server-side-api-weather-dashboard/
 
 <a name="contributing"></a>
 ## 4. Contributing
-Pull requests are welcome. For major changes, please open let repository owner know to discuss what would you like to change.
+Pull requests are welcome. For major changes, please let repository owner know to discuss what would you like to change.
 
 <a name="license"></a>
 ## 5. License
